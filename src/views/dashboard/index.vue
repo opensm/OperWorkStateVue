@@ -67,7 +67,7 @@
 import { mapGetters } from 'vuex'
 import ChartCard from '@/components/ChartCard'
 import { getFlowTasks } from '@/api/flow_task'
-import { getTasks } from '@/api/task'
+import { getTasks } from '@/api/workstates'
 import { getSubtasks } from '@/api/subtask'
 
 export default {

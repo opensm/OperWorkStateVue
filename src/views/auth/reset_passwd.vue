@@ -1,20 +1,27 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :model="temp" :rules="rules" label-width="100px" label-position="right">
-      <el-form-item label="旧密码" prop="oldPassword">
-        <el-input v-model="temp.oldPassword" placeholder="输入旧密码" type="password" style="width: 200px;"/>
-      </el-form-item>
-      <el-form-item label="新密码" prop="password">
-        <el-input v-model="temp.password" placeholder="输入新密码" type="password" style="width: 200px;"/>
-      </el-form-item>
-      <el-form-item label="确认新密码" prop="confirmPassword">
-        <el-input v-model="temp.confirmPassword" placeholder="输入确认新密码" type="password" style="width: 200px;"/>
-      </el-form-item>
-    </el-form>
-    <div style="text-align:right;">
-      <el-button type="danger" @click="dialogVisible=false">取消</el-button>
-      <el-button type="primary" @click="confirmRole">确认</el-button>
-    </div>
+    <el-card class="box-card" style="margin-top: 15px;">
+      <div slot="header" class="clearfix">
+        <span>修改密码</span>
+      </div>
+      <div class="text item">
+        <el-form ref="dataForm" :model="temp" :rules="rules" label-width="100px" label-position="right">
+          <el-form-item label="旧密码" prop="oldPassword">
+            <el-input v-model="temp.oldPassword" placeholder="输入旧密码" type="password" style="width: 200px;" />
+          </el-form-item>
+          <el-form-item label="新密码" prop="password">
+            <el-input v-model="temp.password" placeholder="输入新密码" type="password" style="width: 200px;" />
+          </el-form-item>
+          <el-form-item label="确认新密码" prop="confirmPassword">
+            <el-input v-model="temp.confirmPassword" placeholder="输入确认新密码" type="password" style="width: 200px;" />
+          </el-form-item>
+        </el-form>
+      </div>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="confirmRole">确认</el-button>
+      </div>
+    </el-card>
   </div>
 </template>
 

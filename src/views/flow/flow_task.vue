@@ -212,14 +212,14 @@ export default {
       row.edit = false
       this.$refs['addJsonForm'].validate((valid) => {
         if (valid) {
-          updateFlowTask(row.id, { 'status': row.status }).then(response => {
+          updateFlowTask(row.id, { 'status': row.status, 'approval_note': row.approval_note }).then(response => {
             const { meta } = response
             this.$message({
               message: '修改成功: ' + meta.msg,
               type: 'success'
             })
+            this.getList()
           })
-          this.getList()
         }
       })
     },

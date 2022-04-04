@@ -33,6 +33,11 @@
           {{ scope.row.project_st }}
         </template>
       </el-table-column>
+      <el-table-column align="center" label="所属环境">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.env|tagFilter" effect="dark">{{ scope.row.env|statusFilter }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作用户">
         <template slot-scope="scope">
           {{ scope.row.create_user_st }}
@@ -45,53 +50,72 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" :disabled=" ! scope.row.button.includes('PUT')" @click="handleEdit(scope)">修改</el-button>
-          <el-button type="danger" size="small" :disabled=" ! scope.row.button.includes('DELETE')" @click="handleDelete(scope)">删除</el-button>
+          <el-button type="primary" size="small" :disabled=" ! buttonStatus(scope.row.button, 'PUT')" @click="handleEdit(scope)">修改</el-button>
+          <el-button type="danger" size="small" :disabled=" ! buttonStatus(scope.row.button, 'DELETE')" @click="handleDelete(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑模板':'新增模板'" :close-on-click-modal="false">
-      <el-form :model="templateDb" label-width="80px" label-position="left">
-        <el-form-item label="相关服务">
-          <el-input v-model="templateDb.name" placeholder="相关服务" />
-        </el-form-item>
-        <el-form-item label="操作类">
-          <el-input v-model="templateDb.exec_class" placeholder="填入操作类" />
-        </el-form-item>
-        <el-form-item label="操作方法">
-          <el-input v-model="templateDb.exec_function" placeholder="填入操作方法" />
-        </el-form-item>
-        <el-form-item label="所属项目">
-          <el-select
-            v-model="templateDb.project"
-            filterable
-            default-first-option
-            placeholder="请选择所属项目"
-          >
-            <el-option
-              v-for="item in project"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数据库实例">
-          <el-select
-            v-model="templateDb.instance"
-            filterable
-            default-first-option
-            placeholder="请选择数据库实例"
-          >
-            <el-option
-              v-for="item in instanceList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+      <el-form :model="templateDb" label-width="100px" label-position="left">
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="相关服务">
+              <el-input v-model="templateDb.name" placeholder="相关服务" />
+            </el-form-item>
+            <el-form-item label="操作类">
+              <el-input v-model="templateDb.exec_class" placeholder="填入操作类" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="所属环境">
+              <template>
+                <el-radio-group v-model="templateDb.env">
+                  <el-radio-button label="dev">开发</el-radio-button>
+                  <el-radio-button label="pre">预生产</el-radio-button>
+                  <el-radio-button label="prod">生产</el-radio-button>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+            <el-form-item label="所属项目">
+              <el-select
+                v-model="templateDb.project"
+                filterable
+                default-first-option
+                placeholder="请选择所属项目"
+              >
+                <el-option
+                  v-for="item in project"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="操作方法">
+              <el-input v-model="templateDb.exec_function" placeholder="填入操作方法" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="数据库实例">
+              <el-select
+                v-model="templateDb.instance"
+                filterable
+                default-first-option
+                placeholder="请选择数据库实例"
+              >
+                <el-option
+                  v-for="item in instanceList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
@@ -114,9 +138,28 @@ const defaultTemplate = {
   exec_class: '',
   exec_function: '',
   create_user: '',
-  project: ''
+  project: '',
+  env: ''
 }
 export default {
+  filters: {
+    tagFilter(status) {
+      const statusMap = {
+        'pre': 'warning',
+        'dev': 'info',
+        'prod': 'danger'
+      }
+      return statusMap[status]
+    },
+    statusFilter(status) {
+      const statusMap = {
+        'pre': '预生产',
+        'dev': '开发',
+        'prod': '生产'
+      }
+      return statusMap[status]
+    }
+  },
   data() {
     return {
       templateDb: Object.assign({}, defaultTemplate),
@@ -129,11 +172,19 @@ export default {
       checkStrictly: false
     }
   },
+
   created() {
     // Mock: get all routes and roles list from server
     this.getTemplateDB()
   },
   methods: {
+    buttonStatus(data, button) {
+      if (data === undefined || data.length <= 0) {
+        return false
+      } else {
+        return data.includes(button)
+      }
+    },
     getProjects() {
       getProjects().then(response => {
         const { data } = response
@@ -148,10 +199,14 @@ export default {
       })
     },
     getInstance() {
-      getAuthKEYs().then(response => {
-        const { data } = response
-        this.instanceList = data
-      })
+      const dataType = ['Mongo', 'MySQL']
+      // this.instanceList = []
+      dataType.forEach(items => (
+        getAuthKEYs({ 'auth_type': items }).then(response => {
+          const { data } = response
+          this.instanceList = this.instanceList.concat(data)
+        })
+      ))
     },
     // Reshape the routes structure so that it looks the same as the sidebar
     handleAddRole() {
@@ -183,7 +238,7 @@ export default {
             const { meta } = response
             this.templateDbList.splice($index, 1)
             this.dialogVisible = false
-            const { id, name } = this.templateDb
+            const { id, name } = row
             this.$notify({
               title: '成功',
               dangerouslyUseHTMLString: true,
@@ -191,7 +246,7 @@ export default {
               type: 'success'
             })
             this.dialogVisible = false
-            this.getTemplateDB()
+            // this.getTemplateDB()
           })
         })
         .catch(err => { console.error(err) })

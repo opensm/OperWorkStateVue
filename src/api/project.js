@@ -1,15 +1,16 @@
 import request from '@/utils/request'
 
-export function getProjects() {
+export function getProjects(params) {
   return request({
-    url: '/task/projects',
-    method: 'get'
+    url: '/state/projects',
+    method: 'get',
+    params
   })
 }
 
 export function addProject(data) {
   return request({
-    url: '/task/projects',
+    url: '/state/projects',
     method: 'post',
     data
   })
@@ -17,7 +18,7 @@ export function addProject(data) {
 
 export function updateProject(id, data) {
   return request({
-    url: `/task/project?id=${id}`,
+    url: `/state/project?id=${id}`,
     method: 'put',
     data
   })
@@ -25,7 +26,7 @@ export function updateProject(id, data) {
 
 export function deleteProject(id) {
   return request({
-    url: `/task/project?id=${id}`,
+    url: `/state/project?id=${id}`,
     method: 'delete'
   })
 }

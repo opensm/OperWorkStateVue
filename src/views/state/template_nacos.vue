@@ -3,7 +3,7 @@
     <el-button type="primary" :disabled="post === false" @click="handleAddRole">添加</el-button>
 
     <el-table :data="templateNacosList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="ID">
+      <el-table-column align="center" width="80" label="ID">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
@@ -18,80 +18,121 @@
           {{ scope.row.instance_st }}
         </template>
       </el-table-column>s
-      <el-table-column align="header-center" label="调用类">
+      <el-table-column align="center" label="调用类">
         <template slot-scope="scope">
           {{ scope.row.exec_class }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="调用方法">
+      <el-table-column align="center" label="调用方法">
         <template slot-scope="scope">
           {{ scope.row.exec_function }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="所属项目">
+      <el-table-column align="center" label="所属项目">
         <template slot-scope="scope">
           {{ scope.row.project_st }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="操作用户">
+      <el-table-column align="center" width="120" label="所属环境">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.env|tagFilter" effect="dark">{{ scope.row.env|statusFilter }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" width="150" label="操作用户">
         <template slot-scope="scope">
           {{ scope.row.create_user_st }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="操作时间">
+      <el-table-column align="center" label="操作时间">
         <template slot-scope="scope">
           {{ scope.row.create_time }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" :disabled=" ! scope.row.button.includes('PUT')" @click="handleEdit(scope)">修改</el-button>
-          <el-button type="danger" size="small" :disabled=" ! scope.row.button.includes('DELETE')" @click="handleDelete(scope)">删除</el-button>
+          <el-button type="primary" size="small" :disabled="! buttonStatus(scope.row.button, 'PUT')" @click="handleEdit(scope)">修改</el-button>
+          <el-button type="danger" size="small" :disabled=" ! buttonStatus(scope.row.button, 'DELETE')" @click="handleDelete(scope)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑模板':'新增模板'" :close-on-click-modal="false">
-      <el-form :model="templateNacos" label-width="100px" label-position="left">
-        <el-form-item label="模板名称">
-          <el-input v-model="templateNacos.name" placeholder="填入模板名称" />
-        </el-form-item>
-        <el-form-item label="操作类">
-          <el-input v-model="templateNacos.exec_class" placeholder="填入操作类" />
-        </el-form-item>
-        <el-form-item label="操作方法">
-          <el-input v-model="templateNacos.exec_function" placeholder="填入操作方法" />
-        </el-form-item>
-        <el-form-item label="所属项目">
-          <el-select
-            v-model="templateNacos.project"
-            filterable
-            default-first-option
-            placeholder="请选择所属项目"
-          >
-            <el-option
-              v-for="item in project"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="验证密钥">
-          <el-select
-            v-model="templateNacos.auth_key"
-            filterable
-            default-first-option
-            placeholder="请选择验证密钥"
-          >
-            <el-option
-              v-for="item in authKeyList"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+      <el-form :model="templateNacos" label-width="100px" style="margin-left:50px;" label-position="left">
+        <el-row :gutter="24">
+          <el-col :span="10">
+            <el-form-item label="模板名称">
+              <el-input v-model="templateNacos.name" placeholder="填入模板名称" />
+            </el-form-item>
+            <el-form-item label="操作类">
+              <el-input v-model="templateNacos.exec_class" placeholder="填入操作类" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="所属项目">
+              <el-select
+                v-model="templateNacos.project"
+                filterable
+                default-first-option
+                placeholder="请选择所属项目"
+              >
+                <el-option
+                  v-for="item in project"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+            <el-form-item label="所属环境">
+              <template>
+                <el-radio-group v-model="templateNacos.env">
+                  <el-radio-button label="dev">开发</el-radio-button>
+                  <el-radio-button label="pre">预生产</el-radio-button>
+                  <el-radio-button label="prod">生产</el-radio-button>
+                </el-radio-group>
+              </template>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="操作方法">
+              <el-input v-model="templateNacos.exec_function" placeholder="填入操作方法" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="9">
+            <el-form-item label="配置类型">
+              <el-select
+                v-model="templateNacos.config_type"
+                filterable
+                default-first-option
+                placeholder="请选择验证密钥"
+              >
+                <el-option label="文本" value="text" />
+                <el-option label="JSON" value="json" />
+                <el-option label="XML" value="xml" />
+                <el-option label="YAML" value="yaml" />
+                <el-option label="HTML" value="html" />
+                <el-option label="Properties" value="properties" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="23">
+            <el-form-item label="验证密钥">
+              <el-select
+                v-model="templateNacos.auth_key"
+                filterable
+                default-first-option
+                placeholder="请选择验证密钥"
+              >
+                <el-option
+                  v-for="item in authKeyList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
@@ -114,9 +155,30 @@ const defaultTemplate = {
   exec_class: '',
   exec_function: '',
   create_user: '',
-  project: ''
+  project: '',
+  env: '',
+  config_type: ''
+
 }
 export default {
+  filters: {
+    tagFilter(status) {
+      const statusMap = {
+        'pre': 'warning',
+        'dev': 'info',
+        'prod': 'danger'
+      }
+      return statusMap[status]
+    },
+    statusFilter(status) {
+      const statusMap = {
+        'pre': '预生产',
+        'dev': '开发',
+        'prod': '生产'
+      }
+      return statusMap[status]
+    }
+  },
   data() {
     return {
       templateNacos: Object.assign({}, defaultTemplate),
@@ -134,6 +196,13 @@ export default {
     this.getTemplateNacos()
   },
   methods: {
+    buttonStatus(data, button) {
+      if (data === undefined || data.length <= 0) {
+        return false
+      } else {
+        return data.includes(button)
+      }
+    },
     getProjects() {
       getProjects().then(response => {
         const { data } = response
@@ -148,7 +217,7 @@ export default {
       })
     },
     getAuthKey() {
-      getAuthKEYs().then(response => {
+      getAuthKEYs({ 'auth_type': 'Nacos' }).then(response => {
         const { data } = response
         this.authKeyList = data
       })

@@ -3,17 +3,17 @@
     <el-button type="primary" :disabled=" post === false " @click="handleAddKey">添加</el-button>
 
     <el-table :data="authKeyList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="ID">
+      <el-table-column align="center" width="80" label="ID">
         <template slot-scope="scope">
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column align="header-center" label="名称">
+      <el-table-column align="center" label="名称">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="验证类型">
+      <el-table-column align="center" width="120" label="验证类型">
         <template slot-scope="scope">
           {{ scope.row.auth_type }}
         </template>
@@ -23,12 +23,12 @@
           {{ scope.row.auth_host }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="验证端口">
+      <el-table-column align="center" width="120" label="验证端口">
         <template slot-scope="scope">
           {{ scope.row.auth_port }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="验证用户">
+      <el-table-column align="center" width="120" label="验证用户">
         <template slot-scope="scope">
           {{ scope.row.auth_user }}
         </template>
@@ -38,7 +38,7 @@
           {{ scope.row.auth_params }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="创建用户">
+      <el-table-column align="center" width="120" label="创建用户">
         <template slot-scope="scope">
           {{ scope.row.create_user_st }}
         </template>
@@ -55,8 +55,20 @@
       </el-table-column>
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" :disabled=" ! buttonStatus(scope.row.button,'PUT')" @click="handleEdit(scope)">修改</el-button>
-          <el-button type="danger" size="small" :disabled=" ! buttonStatus(scope.row.button,'DELETE')" @click="handleDelete(scope)">删除</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            :disabled=" ! buttonStatus(scope.row.button,'PUT')"
+            @click="handleEdit(scope)"
+          >修改
+          </el-button>
+          <el-button
+            type="danger"
+            size="small"
+            :disabled=" ! buttonStatus(scope.row.button,'DELETE')"
+            @click="handleDelete(scope)"
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,55 +81,67 @@
         label-width="80px"
         label-position="left"
       >
-        <el-form-item label="验证名称" prop="name">
-          <el-input v-model="authKey.name" placeholder="验证名称" />
-        </el-form-item>
-        <el-form-item label="验证地址" prop="auth_host">
-          <el-input v-model="authKey.auth_host" placeholder="输入验证地址" />
-        </el-form-item>
-        <el-form-item label="认证端口" prop="auth_port">
-          <el-input v-model="authKey.auth_port" placeholder="输入认证端口" />
-        </el-form-item>
-        <el-form-item label="认证用户" prop="auth_user">
-          <el-input v-model="authKey.auth_user" placeholder="输入认证用户" />
-        </el-form-item>
-        <el-form-item label="验证密钥" prop="auth_passwd">
-          <el-input v-model="authKey.auth_passwd" type="password" placeholder="输入验证密钥" />
-        </el-form-item>
-        <el-form-item label="验证参数" prop="auth_params">
-          <el-input v-model="authKey.auth_params" placeholder="输入验证参数" />
-        </el-form-item>
-        <el-form-item label="认证类型" prop="auth_type">
-          <el-select
-            v-model="authKey.auth_type"
-            filterable
-            allow-create
-            default-first-option
-            placeholder="请选择认证类型"
-          >
-            <el-option
-              v-for="item in authType"
-              :key="item"
-              :label="item"
-              :value="item"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="项目" prop="project">
-          <el-select
-            v-model="authKey.project"
-            filterable
-            default-first-option
-            placeholder="请选择项目"
-          >
-            <el-option
-              v-for="item in project"
-              :key="item.id"
-              :label="item.id + ':' +item.name"
-              :value="item.id"
-            />
-          </el-select>
-        </el-form-item>
+        <el-row :gutter="20">
+          <el-col :span="11">
+            <el-form-item label="验证名称" prop="name">
+              <el-input v-model="authKey.name" placeholder="验证名称" />
+            </el-form-item>
+            <el-form-item label="认证类型" prop="auth_type">
+              <el-select
+                v-model="authKey.auth_type"
+                filterable
+                allow-create
+                default-first-option
+                placeholder="请选择认证类型"
+              >
+                <el-option
+                  v-for="item in authType"
+                  :key="item"
+                  :label="item"
+                  :value="item"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="验证地址" prop="auth_host">
+              <el-input v-model="authKey.auth_host" placeholder="输入验证地址" />
+            </el-form-item>
+            <el-form-item label="认证端口" prop="auth_port">
+              <el-input v-model="authKey.auth_port" placeholder="输入认证端口" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="认证用户" prop="auth_user">
+              <el-input v-model="authKey.auth_user" placeholder="输入认证用户" />
+            </el-form-item>
+            <el-form-item label="验证密钥" prop="auth_passwd">
+              <el-input v-model="authKey.auth_passwd" type="password" placeholder="输入验证密钥" show-password />
+            </el-form-item>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item label="项目" prop="project">
+              <el-select
+                v-model="authKey.project"
+                filterable
+                default-first-option
+                placeholder="请选择项目"
+              >
+                <el-option
+                  v-for="item in project"
+                  :key="item.id"
+                  :label="item.id + ':' +item.name"
+                  :value="item.id"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="23">
+            <el-form-item label="验证参数" prop="auth_params">
+              <el-input v-model="authKey.auth_params" placeholder="输入验证参数" />
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <div style="text-align:right;">
         <el-button type="danger" @click="dialogVisible=false">取消</el-button>
@@ -129,8 +153,10 @@
 
 <script>
 import { deepClone } from '@/utils'
-import { getAuthKEYs, updateAuthKey, addAuthKey, deleteAuthKey } from '@/api/auth_key'
+import { addAuthKey, deleteAuthKey, getAuthKEYs, updateAuthKey } from '@/api/auth_key'
 import { getProjects } from '@/api/project'
+
+import Crypto from '@/utils/secret'
 
 const defaultKey = {
   id: '',
@@ -223,6 +249,7 @@ export default {
       this.dialogVisible = true
       this.getProjects()
       this.authKey = deepClone(scope.row)
+      this.authKey.auth_passwd = Crypto.get(this.authKey.auth_passwd, 'uW_Ab2r93qN3auGB')
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
@@ -237,7 +264,7 @@ export default {
           deleteAuthKey(row.id).then(response => {
             const { meta } = response
             this.authKeyList.splice($index, 1)
-            const { id, name } = this.authKey
+            const { id, name } = row
             this.$notify({
               title: '成功',
               dangerouslyUseHTMLString: true,
@@ -251,13 +278,16 @@ export default {
             this.getKeys()
           })
         })
-        .catch(err => { console.error(err) })
+        .catch(err => {
+          console.error(err)
+        })
     },
     confirmKey() {
       const isEdit = this.dialogType === 'edit'
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (isEdit) {
+            this.authKey.auth_passwd = Crypto.set(this.authKey.auth_passwd, 'uW_Ab2r93qN3auGB')
             updateAuthKey(this.authKey.id, this.authKey).then(response => {
               const { data, meta } = response
               this.authKey.id = data.id
@@ -275,6 +305,7 @@ export default {
               this.getKeys()
             })
           } else {
+            this.authKey.auth_passwd = Crypto.set(this.authKey.auth_passwd, 'uW_Ab2r93qN3auGB')
             addAuthKey(this.authKey).then(response => {
               const { data, meta } = response
               this.authKey.id = data.id
@@ -290,9 +321,9 @@ export default {
             <div>返回信息: ${meta.msg}</div>`,
                 type: 'success'
               })
+              this.dialogVisible = false
+              this.getKeys()
             })
-            this.dialogVisible = false
-            this.getKeys()
           }
         }
       })
@@ -306,6 +337,7 @@ export default {
   .Keys-table {
     margin-top: 30px;
   }
+
   .permission-tree {
     margin-bottom: 30px;
   }

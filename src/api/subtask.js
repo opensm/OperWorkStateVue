@@ -43,9 +43,10 @@ export function getObjectid(object) {
     method: 'get'
   })
 }
-export function getTemplateValues() {
+export function getTemplateValues(params) {
   return request({
     url: '/task/template_list',
-    method: 'get'
+    method: 'get',
+    params
   })
 }

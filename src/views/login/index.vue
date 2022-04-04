@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
+import Crypto from '@/utils/secret'
 
 export default {
   name: 'Login',
@@ -103,11 +104,14 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          const tmpPassword = this.loginForm.password
           this.loading = true
+          this.loginForm.password = Crypto.set(this.loginForm.password, '1111111111111111')
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/dashboard' })
             this.loading = false
           }).catch(() => {
+            this.loginForm.password = tmpPassword
             this.loading = false
           })
         } else {

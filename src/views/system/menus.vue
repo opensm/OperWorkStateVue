@@ -42,70 +42,41 @@
     <el-table
       :key="tableKey"
       v-loading="listLoading"
-      :data="list"
       border
-      fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange"
+      :data="list"
+      row-key="id"
+      :tree-props="{children: 'children', hasChildren: true}"
     >
       <el-table-column
-        label="ID"
-        prop="id"
-        sortable="custom"
+        prop="name"
+        label="菜单名称"
+        :show-overflow-tooltip="true"
+        width="220px"
+      />
+      <el-table-column
+        prop="component_type"
+        label="组件类型"
         align="center"
-        width="80"
-        :class-name="getSortClass('id')"
-      >
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
+        width="160px"
+      />
+      <el-table-column prop="icon" label="图标" align="center" width="160px">
+        <template slot-scope="scope">
+          <svg-icon :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column label="权限" align="center">
-        <template slot-scope="{row}">
-          <span class="link-type">{{ row.name }}</span>
+      <el-table-column prop="index" label="排序" width="120px" align="center" />
+      <el-table-column prop="path" label="路径" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span>{{ scope.row.path }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="父菜单" align="center">
-        <template slot-scope="{row}">
-          <template v-for="(item,key) in list">
-            <span v-if="row.parent === item.id" :key="key">{{ item.name }}</span>
-          </template>
-        </template>
-      </el-table-column>
-      <el-table-column label="URL" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.path }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="显示序列" align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.index }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="图标" align="center">
-        <template slot-scope="{row}">
-          <span
-            v-if="row.icon"
-          >
-            <svg-icon
-              :icon-class="row.icon"
-            />
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="菜单等级" align="center">
-        <template slot-scope="{row}">
-          <el-tag>{{ row.level | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" :disabled="! row.button.includes('PUT')" @click="handleUpdate(row)">
+      <el-table-column prop="create_date" label="创建日期" width="220px" />
+      <el-table-column label="操作" align="center" prop="button" class-name="small-padding fixed-width" width="220px">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" :disabled="! buttonStatus(scope.row.button, 'PUT')" @click="handleUpdate(scope.row)">
             修改
           </el-button>
-          <el-button size="mini" type="danger" :disabled="! row.button.includes('DELETE')" @click="handleDelete(row,$index)">
+          <el-button size="mini" type="danger" :disabled="! buttonStatus(scope.row.button, 'DELETE')" @click="handleDelete(scope,scope.row.id)">
             删除
           </el-button>
         </template>
@@ -133,10 +104,23 @@
             v-model="temp.name"
           />
         </el-form-item>
+        <el-form-item label="隐藏" prop="component">
+          <el-switch
+            v-model="temp.hidden"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          />
+        </el-form-item>
         <el-form-item label="url" prop="path">
           <el-input
             v-model="temp.path"
           />
+        </el-form-item>
+        <el-form-item label="组件类型" prop="level">
+          <el-select ref="select" v-model="temp.component_type" placeholder="请选择">
+            <el-option value="M">菜单</el-option>
+            <el-option value="B">按钮</el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="菜单等级" prop="level">
           <el-select ref="select" v-model="temp.level" placeholder="请选择">
@@ -163,8 +147,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="显示序列" prop="index">
-          <el-input
+          <el-input-number
             v-model="temp.index"
+            :min="0"
+            :max="10"
           />
         </el-form-item>
         <el-form-item label="父级菜单" prop="parent">
@@ -252,7 +238,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        level: undefined,
+        level: 0,
         sort: '+id'
       },
       calendarTypeOptions,
@@ -272,7 +258,8 @@ export default {
         name: '',
         icon: '',
         level: '',
-        hidden: 'false',
+        hidden: false,
+        component_type: '',
         parent: '',
         index: 0,
         children: []
@@ -280,8 +267,8 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       textMap: {
-        update: '修改权限',
-        create: '添加权限'
+        update: '修改菜单',
+        create: '添加菜单'
       },
       dialogPvVisible: false,
       pvData: [],
@@ -306,6 +293,13 @@ export default {
     this.getList()
   },
   methods: {
+    buttonStatus(data, button) {
+      if (data === undefined || data.length <= 0) {
+        return false
+      } else {
+        return data.includes(button)
+      }
+    },
     getList() {
       this.listLoading = true
       // 重置选择上的空
