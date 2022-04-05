@@ -9,9 +9,9 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">糟糕!</div>
-<!--        <div class="bullshit__info">All rights reserved-->
-<!--          <a style="color:#20a0ff" href="https://wallstreetcn.com" target="_blank">wallstreetcn</a>-->
-<!--        </div>-->
+        <!--        <div class="bullshit__info">All rights reserved-->
+        <!--          <a style="color:#20a0ff" href="https://wallstreetcn.com" target="_blank">wallstreetcn</a>-->
+        <!--        </div>-->
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">返回首页</div>
         <a href="" class="bullshit__return-home">返回首页</a>

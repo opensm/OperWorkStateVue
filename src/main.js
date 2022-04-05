@@ -14,7 +14,6 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import Moment from 'moment-timezone'
-import VueFormulate from '@braid/vue-formulate'
 
 /**
  * If you don't want to use mock-server
@@ -29,18 +28,12 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 
-Vue.filter('formatDate', function(value) {
-  Moment.tz.setDefault('Asia/Shanghai')
-  return Moment(value).format('YYYY-MM-DD HH:mm:ss')
-})
-
 Vue.prototype.moment = Moment
 
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
-Vue.use(VueFormulate)
 
 Vue.config.productionTip = false
 

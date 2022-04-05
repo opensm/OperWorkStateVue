@@ -67,8 +67,7 @@
             :default-checked-keys="role.menu"
             :props="defaultProps"
             class="permission-tree"
-          >
-          </el-tree>
+          />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">

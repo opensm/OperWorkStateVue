@@ -2,8 +2,7 @@
   <dynamic-form
     v-model="data"
     :descriptors="descriptors"
-  >
-  </dynamic-form>
+  />
 </template>
 
 <script>

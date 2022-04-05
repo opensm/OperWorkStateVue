@@ -1,161 +1,156 @@
 <template>
-  <div class="app-container">
-    <el-button
-      type="primary"
-      :disabled="post === false"
-      @click="handleAddProject"
-    >添加</el-button>
-
-    <el-table :data="projectList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="ID">
-        <template slot-scope="scope">
-          {{ scope.row.id }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="项目">
-        <template slot-scope="scope">
-          {{ scope.row.name }}
-        </template>
-      </el-table-column>
-      <el-table-column align="header-center" label="创建时间">
-        <template slot-scope="scope">
-          {{ scope.row.create_time }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作">
-        <template slot-scope="scope">
-          <el-button type="primary" size="small" :disabled=" ! scope.row.button.includes('PUT')" @click="handleEdit(scope)">修改</el-button>
-          <el-button type="danger" size="small" :disabled=" ! scope.row.button.includes('DELETE')" @click="handleDelete(scope)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑项目':'新增项目'" :close-on-click-modal="false">
-      <el-form :model="project" label-width="80px" label-position="left">
-        <el-form-item label="项目ID">
-          <el-input v-model="project.id" placeholder="项目ID" :disabled="dialogType ==='edit'" />
-        </el-form-item>
-        <el-form-item label="项目名称">
-          <el-input
-            v-model="project.name"
-            placeholder="项目名称"
-          />
-        </el-form-item>
-      </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">取消</el-button>
-        <el-button type="primary" @click="confirmProject">确认</el-button>
-      </div>
-    </el-dialog>
+  <div>
+    <el-row :gutter="0">
+      <el-col :span="12" :style="{ marginBottom: '12px' }">
+        <v-chart class="chart" :option="projects"/>
+      </el-col>
+      <el-col :span="12" :style="{ marginBottom: '12px' }">
+        <v-chart class="chart" :option="option"/>
+      </el-col>
+    </el-row>
   </div>
+
 </template>
 
 <script>
-import { deepClone } from '@/utils'
-import { getProjects, updateProject, addProject, deleteProject } from '@/api/project'
+import {mapGetters} from 'vuex'
+import ChartCard from '@/components/ChartCard'
+import {getGroupStates} from "@/api/workstates"
 
-const defaultProject = {
-  id: '',
-  name: ''
-}
+import {use} from 'echarts/core'
+import {CanvasRenderer} from 'echarts/renderers'
+import {PieChart} from 'echarts/charts'
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from 'echarts/components'
+import VChart, {THEME_KEY} from 'vue-echarts'
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+])
+
 export default {
+  name: 'Dashboard',
+  components: {
+    ChartCard,
+    VChart
+  },
+  provide: {
+    [THEME_KEY]: 'dark'
+  },
   data() {
     return {
-      data: {},
-      project: {
-        id: '',
-        name: ''
+      projects: {
+        title: {
+          text: '按项目统计',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: this.projectList
+        },
+        series: [
+          {
+            name: '项目情况统计',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+              {value: 1, name: 'P102'},
+              {value: 7, name: 'P301'},
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 5,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
       },
-      post: true,
-      projectList: [],
-      dialogVisible: false,
-      dialogType: 'new',
-      checkStrictly: false
+      option :{
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        dataset: {
+          source: [
+            ['product', '2015', '2016', '2017'],
+            ['Matcha Latte', 43.3, 85.8, 93.7],
+            ['Milk Tea', 83.1, 73.4, 55.1],
+            ['Cheese Cocoa', 86.4, 65.2, 82.5],
+            ['Walnut Brownie', 72.4, 53.9, 39.1]
+          ]
+        },
+        xAxis: {type: 'category'},
+        yAxis: {},
+        // Declare several bar series, each will be mapped
+        // to a column of dataset.source by default.
+        series: [
+          {type: 'bar'},
+          {type: 'bar'},
+          {type: 'bar'}
+        ]
+      },
+      projectList: []
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'name',
+      'roles',
+      'role_name',
+      'last'
+    ]),
+    getUnCommit: function () {
+      return this.flowTaskTotal - (this.unCommit + this.commit)
     }
   },
   created() {
-    // Mock: get all routes and Projects list from server
-    this.getProjects()
+    this.getTotalState()
   },
   methods: {
-    getProjects() {
-      getProjects().then(response => {
+    getTotalState() {
+      getGroupStates().then(response => {
         const { data } = response
-        this.projectList = data
-        this.post = response.meta.post_tag
-      })
-    },
-    // Reshape the routes structure so that it looks the same as the sidebar
-    handleAddProject() {
-      this.project = Object.assign({}, defaultProject)
-      this.dialogType = 'new'
-      this.dialogVisible = true
-    },
-    handleEdit(scope) {
-      this.dialogType = 'edit'
-      this.dialogVisible = true
-      this.checkStrictly = true
-      this.project = deepClone(scope.row)
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    handleDelete({ $index, row }) {
-      this.$confirm('确认删除该项目吗?!', '提示！', {
-        confirmButtonText: '确认',
-        cancelButtonText: '删除',
-        type: 'warning'
-      })
-        .then(() => {
-          deleteProject(row.id).then(response => {
-            const { data } = response
-            this.getProjects()
-            this.$notify({
-              title: '成功',
-              dangerouslyUseHTMLString: true,
-              message: `
-            <div>项目ID: ${data.id}</div>
-            <div>项目名称: ${data.name}</div>
-`,
-              type: 'success'
-            })
-          })
+        data.map(item =>{
+          this.projectList.push(item.Project)
         })
-        .catch(err => { console.error(err) })
-    },
-    async confirmProject() {
-      const isEdit = this.dialogType === 'edit'
-      if (isEdit) {
-        await updateProject(this.project.id, this.project)
-      } else {
-        const { data } = await addProject(this.project)
-        this.project.id = data.id
-        this.projectList.push(this.project)
-      }
-      this.getProjects()
-      const { id, name } = this.project
-      this.dialogVisible = false
-      this.$notify({
-        title: '成功',
-        dangerouslyUseHTMLString: true,
-        message: `
-            <div>项目ID: ${id}</div>
-            <div>项目名称: ${name}</div>
-`,
-        type: 'success'
       })
-    }
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-  .Projects-table {
-    margin-top: 30px;
+.dashboard {
+  &-container {
+    margin: 30px;
   }
-  .permission-tree {
-    margin-bottom: 30px;
+
+  &-text {
+    font-size: 30px;
+    line-height: 46px;
   }
+}
+
+.chart {
+  height: 400px;
 }
 </style>

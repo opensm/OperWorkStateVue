@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-container">
-<!--    <div class="dashboard-text">姓名: {{ name }}</div>-->
-<!--    <div class="dashboard-text">角色: <span v-for="role in roles" :key="role">{{ role }}</span></div>-->
+    <!--    <div class="dashboard-text">姓名: {{ name }}</div>-->
+    <!--    <div class="dashboard-text">角色: <span v-for="role in roles" :key="role">{{ role }}</span></div>-->
     <el-row :gutter="12">
       <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
         <chart-card title="当前角色" :total="getRoleName()">
@@ -18,7 +18,7 @@
         </chart-card>
       </el-col>
       <el-col :sm="24" :xs="24" :md="6" :xl="6" :lg="6" :style="{ marginBottom: '12px' }">
-        <chart-card title="待审核工单" :total="getUnCommit">
+        <chart-card title="待核验已完成" :total="getUnCommit">
           <el-tooltip slot="action" class="item" effect="dark" content="需要审批的工单数" placement="top-start">
             <i class="el-icon-warning-outline" />
           </el-tooltip>
@@ -60,23 +60,91 @@
         </chart-card>
       </el-col>
     </el-row>
+    <el-row :gutter="12">
+      <el-col :span="12" :style="{ marginBottom: '12px' }">
+        <v-chart class="chart" :option="option" />
+      </el-col>
+    </el-row>
   </div>
+
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import ChartCard from '@/components/ChartCard'
-import { getFlowTasks } from '@/api/flow_task'
-import { getTasks } from '@/api/workstates'
-import { getSubtasks } from '@/api/subtask'
+
+import { use } from 'echarts/core'
+import { CanvasRenderer } from 'echarts/renderers'
+import { PieChart } from 'echarts/charts'
+import {
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+} from 'echarts/components'
+import VChart, { THEME_KEY } from 'vue-echarts'
+
+use([
+  CanvasRenderer,
+  PieChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent
+])
 
 export default {
   name: 'Dashboard',
   components: {
-    ChartCard
+    ChartCard,
+    VChart
+  },
+  provide: {
+    [THEME_KEY]: 'dark'
   },
   data() {
     return {
+      option: {
+        title: {
+          text: '按项目统计',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          orient: 'vertical',
+          left: 'left',
+          data: [
+            'Direct',
+            'Email',
+            'Ad Networks',
+            'Video Ads',
+            'Search Engines'
+          ]
+        },
+        series: [
+          {
+            name: 'Traffic Sources',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+              { value: 335, name: 'Direct' },
+              { value: 310, name: 'Email' },
+              { value: 234, name: 'Ad Networks' },
+              { value: 135, name: 'Video Ads' },
+              { value: 1548, name: 'Search Engines' }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      },
       subTaskTotal: 0,
       flowTaskTotal: 0,
       taskTotal: 0,
@@ -112,54 +180,54 @@ export default {
       return this.last
     },
     getFlowTaskTotal() {
-      getFlowTasks().then(response => {
-        const { total } = response
-        this.flowTaskTotal = total
-      })
+      // getFlowTasks().then(response => {
+      //   const { total } = response
+      //   this.flowTaskTotal = total
+      // })
       return this.flowTaskTotal
     },
     getFlowTaskCommitTotal() {
-      getFlowTasks({ 'status': 'pass' }).then(response => {
-        const { total } = response
-        this.commit = total
-      })
-      getFlowTasks({ 'status': 'refuse' }).then(response => {
-        const { total } = response
-        this.unCommit = total
-      })
+      // getFlowTasks({ 'status': 'pass' }).then(response => {
+      //   const { total } = response
+      //   this.commit = total
+      // })
+      // getFlowTasks({ 'status': 'refuse' }).then(response => {
+      //   const { total } = response
+      //   this.unCommit = total
+      // })
     },
     getRoleName() {
       return this.role_name
     },
     getTotalTask() {
-      getTasks().then(response => {
-        const { total } = response
-        this.taskTotal = total
-      })
+      // getTasks().then(response => {
+      //   const { total } = response
+      //   this.taskTotal = total
+      // })
     },
     getRunningTask() {
-      getTasks({ 'status': 'progressing' }).then(response => {
-        const { total } = response
-        this.runningTaskTotal = total
-      })
+      // getTasks({ 'status': 'progressing' }).then(response => {
+      //   const { total } = response
+      //   this.runningTaskTotal = total
+      // })
     },
     getSuccessTask() {
-      getTasks({ 'status': 'success' }).then(response => {
-        const { total } = response
-        this.successTaskTotal = total
-      })
+      // getTasks({ 'status': 'success' }).then(response => {
+      //   const { total } = response
+      //   this.successTaskTotal = total
+      // })
     },
     getFailedTask() {
-      getTasks({ 'status': 'fail' }).then(response => {
-        const { total } = response
-        this.failedTaskTotal = total
-      })
+      // getTasks({ 'status': 'fail' }).then(response => {
+      //   const { total } = response
+      //   this.failedTaskTotal = total
+      // })
     },
     getSubTask() {
-      getSubtasks().then(response => {
-        const { total } = response
-        this.subTaskTotal = total
-      })
+      // getSubtasks().then(response => {
+      //   const { total } = response
+      //   this.subTaskTotal = total
+      // })
     }
   }
 }
@@ -174,5 +242,8 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.chart {
+  height: 400px;
 }
 </style>

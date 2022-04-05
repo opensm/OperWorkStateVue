@@ -166,10 +166,10 @@
                 default-first-option
                 placeholder="请选择子任务"
               >
-                <el-option value="hour" label="小时"/>
-                <el-option value="date" label="天"/>
-                <el-option value="month" label="月"/>
-                <el-option value="min" label="分钟"/>
+                <el-option value="hour" label="小时" />
+                <el-option value="date" label="天" />
+                <el-option value="month" label="月" />
+                <el-option value="min" label="分钟" />
               </el-select>
             </el-form-item>
 
@@ -182,14 +182,14 @@
                 default-first-option
                 placeholder="请选择子任务"
               >
-                <el-option value="not_start" label="未开始"/>
-                <el-option value="progressing" label="进行中"/>
-                <el-option value="success" label="进行中"/>
-                <el-option value="checked" label="进行中"/>
+                <el-option value="not_start" label="未开始" />
+                <el-option value="progressing" label="进行中" />
+                <el-option value="success" label="已完成" />
+                <el-option value="checked" label="已核验" />
               </el-select>
             </el-form-item>
             <el-form-item label="使用时间" prop="UseTimeType">
-              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12"></el-input-number>
+              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12" />
             </el-form-item>
           </el-col>
           <el-col :span="19">
@@ -233,21 +233,18 @@
 
 <script>
 import {
-  getStates, deleteState, updateState, addState,getGroupStates
+  getStates, deleteState, updateState, addState, getGroupStates
 } from '@/api/workstates'
 import waves from '@/directive/waves' // waves directive
-import {getProjects} from '@/api/project'
-import {current_user, getUsersInfo} from '@/api/user'
+import { getProjects } from '@/api/project'
+import { current_user, getUsersInfo } from '@/api/user'
 import Pagination from '@/components/Pagination'
-import VueFormulate from '@braid/vue-formulate'
-import '/node_modules/@braid/vue-formulate/themes/snow/snow.scss'
-import {deleteAuthKey} from '@/api/auth_key'
+// import '/node_modules/@braid/vue-formulate/themes/snow/snow.scss'
 
 export default {
   name: 'ComplexTable',
   components: {
-    Pagination,
-    VueFormulate
+    Pagination
   },
   directives: {
     waves
@@ -443,7 +440,7 @@ export default {
       this.temp.CommandUser = this.current
 
       addState(this.temp).then(response => {
-        const {meta} = response
+        const { meta } = response
         this.list.unshift(this.temp)
         this.$notify({
           title: '成功',
@@ -470,7 +467,7 @@ export default {
       this.temp.CommandUser = this.current
 
       updateState(this.temp.id, this.temp).then(response => {
-        const {meta} = response
+        const { meta } = response
         const index = this.list.findIndex(v => v.id === this.temp.id)
         this.list.splice(index, 1, this.temp)
         this.$notify({
@@ -490,8 +487,8 @@ export default {
       })
         .then(() => {
           deleteState(row.id).then(response => {
-            const {meta} = response
-            const {id, Content} = row
+            const { meta } = response
+            const { id, Content } = row
             this.list.splice(index, 1)
             this.$notify({
               title: '成功',
@@ -509,7 +506,7 @@ export default {
           console.error(err)
         })
     },
-    getSortClass: function (key) {
+    getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
     }
