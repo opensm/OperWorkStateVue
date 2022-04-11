@@ -193,8 +193,8 @@
               >
                 <el-option
                   v-for="item in this.status_list"
-                  :key="item.StatusCode"
-                  :value="item.StatusCode"
+                  :key="item.id"
+                  :value="item.id"
                   :label="item.StatusName"
                 />
                 <!--                <el-option value="not_start" label="未开始"/>-->
