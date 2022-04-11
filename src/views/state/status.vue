@@ -62,6 +62,16 @@
           <span>{{ row.StatusCode }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Jira项目" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.JiraProject }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="ShowType" align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.ShowType }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center">
         <template slot-scope="{row}">
           <span>{{ row.Description }}</span>
@@ -115,12 +125,22 @@
                 v-model="temp.StatusName"
               />
             </el-form-item>
+            <el-form-item label="Jira项目" prop="StatusCode">
+              <el-input
+                v-model="temp.JiraProject"
+              />
+            </el-form-item>
 
           </el-col>
           <el-col :span="10">
-            <el-form-item label="项目id" prop="StatusCode">
+            <el-form-item label="状态code" prop="StatusCode">
               <el-input
                 v-model="temp.StatusCode"
+              />
+            </el-form-item>
+            <el-form-item label="ShowType" prop="ShowType">
+              <el-input
+                v-model="temp.ShowType"
               />
             </el-form-item>
           </el-col>
@@ -192,7 +212,8 @@
           id: undefined,
           StatusCode: '',
           StatusName: '',
-          Description: ''
+          Description: '',
+          ShowType:''
         },
         dialogFormVisible: false,
         dialogStatus: '',
@@ -204,7 +225,7 @@
         pvData: [],
         rules: {
           StatusCode: [{
-            required: true, message: '任务名称必须填写！', trigger: 'blur'
+            required: true, message: '状态名称必须填写！', trigger: 'blur'
           }],
           StatusName: [{
             required: true, message: '状态名称必须填写！', trigger: 'blur'
@@ -212,8 +233,11 @@
           JiraProject: [{
             required: true, message: 'Jira项目必须填写！', trigger: 'blur'
           }],
+          ShowType: [{
+            required: true, message: '显示类型！', trigger: 'blur'
+          }],
           Description: [{
-            required: true, message: '审批流程必须填写！', trigger: 'blur'
+            required: true, message: '备注必须填写！', trigger: 'blur'
           }]
         },
         downloadLoading: false
@@ -223,9 +247,9 @@
       this.getList()
     },
     methods: {
-      handleView(row) {
-        this.$router.push({path: '/state/project', query: {task_id: row.id}})
-      },
+      // handleView(row) {
+      //   this.$router.push({path: '/state/project', query: {task_id: row.id}})
+      // },
       buttonStatus(data, button) {
         if (data === undefined || data.length <= 0) {
           return false
@@ -281,7 +305,8 @@
           id: undefined,
           StatusCode: '',
           StatusName: '',
-          Description: ''
+          Description: '',
+          ShowType:''
         }
       },
       handleCreate() {
