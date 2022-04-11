@@ -362,6 +362,7 @@
     },
     methods: {
       changeSwitch(data) {
+        console.log(data)
         if (data === true) {
           this.getUser()
         } else {
