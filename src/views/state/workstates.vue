@@ -212,6 +212,7 @@
             </el-form-item>
             <el-form-item label="是否为他人创建">
               <el-switch
+                v-model="other"
                 @change="changeSwitch($event)"
                 active-color="#13ce66"
                 inactive-color="#ff4949">
@@ -304,7 +305,7 @@
         projectList: [],
         current: '',
         list: [],
-        // other: false,
+        other: false,
         user_list: [],
         listLoading: true,
         listQuery: {
@@ -469,6 +470,7 @@
         this.getUser()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
+        this.other = false
       },
       createData() {
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
@@ -496,6 +498,11 @@
         this.temp = Object.assign({}, row) // copy obj
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
+        if (this.temp.CommandUser===this.temp.CreateUser) {
+          this.other = false
+        } else {
+          this.other = true
+        }
       },
       updateData() {
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
