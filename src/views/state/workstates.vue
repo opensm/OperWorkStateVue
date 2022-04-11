@@ -170,15 +170,14 @@
                 <el-option value="hour" label="小时"/>
               </el-select>
             </el-form-item>
-            <el-form-item label="结束时间" prop="FinishTime">
+            <el-form-item label="开始时间" prop="StartTime">
               <el-date-picker
-                v-model="temp.FinishTime"
+                v-model="temp.StartTime"
                 type="datetime"
                 placeholder="选择日期时间"
                 default-time="00:00:00"
               />
             </el-form-item>
-
           </el-col>
           <el-col :span="10">
             <el-form-item label="任务名称" prop="TaskName">
@@ -200,17 +199,18 @@
                 <el-option value="checked" label="已核验"/>
               </el-select>
             </el-form-item>
-            <el-form-item label="使用时间" prop="UseTimeType">
-              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12"/>
-            </el-form-item>
-            <el-form-item label="开始时间" prop="StartTime">
+            <el-form-item label="结束时间" prop="FinishTime">
               <el-date-picker
-                v-model="temp.StartTime"
+                v-model="temp.FinishTime"
                 type="datetime"
                 placeholder="选择日期时间"
                 default-time="00:00:00"
               />
             </el-form-item>
+            <el-form-item label="使用时间" prop="UseTimeType">
+              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12"/>
+            </el-form-item>
+
           </el-col>
           <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
