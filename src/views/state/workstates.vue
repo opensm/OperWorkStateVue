@@ -284,7 +284,7 @@
         //   '10006': '任务已核验'
         // }
         const statusMap = process.env.TASK_STATUS
-        return statusMap[status]
+        return statusMap[status + '']
       },
       tagFilter(status) {
         const statusMap = {
