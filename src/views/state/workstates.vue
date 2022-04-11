@@ -218,6 +218,16 @@
                 inactive-color="#ff4949">
               </el-switch>
             </el-form-item>
+            <el-form-item  v-if="other" label="执行人" prop="CommandUser">
+              <el-select
+                v-model="temp.CommandUser"
+                filterable
+                default-first-option
+                placeholder="请选择执行人"
+              >
+                <el-option value="ddd" label="daaaa"/>
+              </el-select>
+            </el-form-item>
           </el-col>
           <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
@@ -348,7 +358,11 @@
     },
     methods: {
       changeSwitch(data) {
-        console.log(data)
+        if (data === true) {
+          this.getUser()
+        } else {
+          this.temp.CommandUser = this.current
+        }
       },
       buttonStatus(data, button) {
         if (data === undefined || data.length <= 0) {
@@ -390,10 +404,9 @@
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
-        })
-        current_user().then(response => {
-          this.current = response.data.id
-          console.log(this.current)
+          current_user().then(response => {
+            this.current = response.data.id
+          })
         })
         getGroupStates().then(response => {
           // this.current = response.data.id
