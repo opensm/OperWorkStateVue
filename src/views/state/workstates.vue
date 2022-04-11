@@ -343,7 +343,6 @@
     },
     created() {
       this.getList()
-      this.getStatus()
     },
     methods: {
       changeSwitch(data) {
@@ -453,6 +452,7 @@
         this.resetTemp()
         this.getProject()
         this.getUser()
+        this.getStatus()
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.other = false
@@ -480,6 +480,7 @@
         // this.resetTemp()
         this.getProject()
         this.getUser()
+        this.getStatus()
         this.temp = Object.assign({}, row) // copy obj
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
