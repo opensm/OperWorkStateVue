@@ -218,6 +218,8 @@
                 inactive-color="#ff4949">
               </el-switch>
             </el-form-item>
+          </el-col>
+          <el-col :span="19">
             <el-form-item  v-if="other" label="执行人" prop="CommandUser">
               <el-select
                 v-model="temp.CommandUser"
@@ -228,8 +230,6 @@
                 <el-option value="ddd" label="daaaa"/>
               </el-select>
             </el-form-item>
-          </el-col>
-          <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
               <el-input
                 v-model="temp.Content"
