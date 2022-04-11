@@ -381,6 +381,7 @@
         getStatuses().then(response => {
           const data = response
           this.status_list = data
+          console.log(this.status_list)
         })
       },
       getList() {
