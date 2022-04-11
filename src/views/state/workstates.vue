@@ -58,6 +58,11 @@
             {{ row.project_st }}
           </template>
         </el-table-column>
+        <el-table-column label="任务名称" align="center">
+          <template slot-scope="{row}">
+            {{ row.TaskName }}
+          </template>
+        </el-table-column>
         <el-table-column label="使用时长" align="center">
           <template slot-scope="{row}">
             <span>{{ row.UseTime }} {{ row.UseTimeType }}</span>
@@ -197,10 +202,6 @@
                   :value="item.id"
                   :label="item.StatusName"
                 />
-                <!--                <el-option value="not_start" label="未开始"/>-->
-                <!--                <el-option value="progressing" label="进行中"/>-->
-                <!--                <el-option value="success" label="已完成"/>-->
-                <!--                <el-option value="checked" label="已核验"/>-->
               </el-select>
             </el-form-item>
             <el-form-item label="结束时间" prop="FinishTime">
