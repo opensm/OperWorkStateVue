@@ -149,8 +149,8 @@
 
 <script>
   import {
-    getProjects, deleteProject, updateProject, addProject
-  } from '@/api/project'
+    getStatuses, deleteStatus, updateStatus, addStatuses
+  } from '@/api/status'
   import waves from '@/directive/waves' // waves directive
   import Pagination from '@/components/Pagination'
 
@@ -239,7 +239,7 @@
         if (this.listQuery.StatusName === '') {
           this.listQuery.StatusName = undefined
         }
-        getProjects(this.listQuery).then(response => {
+        getStatuses(this.listQuery).then(response => {
           this.list = response.data
           this.total = response.total
           this.post = response.meta.post_tag
@@ -295,7 +295,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             // this.temp.task_time = this.moment(this.temp.task_time).format('YYYY-MM-DD HH:mm:ss')
-            addProject(this.temp).then(response => {
+            addStatuses(this.temp).then(response => {
               const {meta} = response
               this.list.unshift(this.temp)
               this.$notify({
@@ -323,7 +323,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             const tempData = Object.assign({}, this.temp)
-            updateProject(tempData.id, tempData).then(response => {
+            updateStatus(tempData.id, tempData).then(response => {
               const {meta} = response
               const index = this.list.findIndex(v => v.id === this.temp.id)
               this.list.splice(index, 1, this.temp)
@@ -345,7 +345,7 @@
           type: 'warning'
         })
           .then(() => {
-            deleteProject(row.id).then(response => {
+            deleteStatus(row.id).then(response => {
               const {meta} = response
               const {id, StatusName} = row
               this.list.splice(index, 1)
