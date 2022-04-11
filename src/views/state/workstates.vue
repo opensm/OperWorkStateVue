@@ -400,7 +400,6 @@
           }, 1.5 * 1000)
           current_user().then(response => {
             this.current = response.data.id
-            this.CommandUser = this.current
           })
         })
       },
@@ -457,6 +456,7 @@
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.other = false
+        this.CommandUser = this.current
       },
       createData() {
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
