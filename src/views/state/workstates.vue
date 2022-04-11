@@ -212,8 +212,7 @@
             </el-form-item>
             <el-form-item label="是否为他人创建">
               <el-switch
-                v-model="other"
-                @change="changeSwitch(other)"
+                @change="changeSwitch($event)"
                 active-color="#13ce66"
                 inactive-color="#ff4949">
               </el-switch>
@@ -305,7 +304,7 @@
         projectList: [],
         current: '',
         list: [],
-        other: false,
+        // other: false,
         user_list: [],
         listLoading: true,
         listQuery: {
