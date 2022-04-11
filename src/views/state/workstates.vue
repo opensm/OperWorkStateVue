@@ -456,7 +456,7 @@
         this.dialogStatus = 'create'
         this.dialogFormVisible = true
         this.other = false
-        this.CommandUser = this.current
+        this.temp.CommandUser = this.current
       },
       createData() {
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
