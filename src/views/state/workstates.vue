@@ -211,6 +211,18 @@
               />
             </el-form-item>
           </el-col>
+          <el-form-item label="是否为他人创建">
+            <el-switch
+              v-model="other"
+              on-text="是"
+              on-value="1"
+              off-text="否"
+              off-value="0"
+              @change="changeSwitch(other)"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </el-form-item>
           <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
               <el-input
@@ -282,6 +294,7 @@
         projectList: [],
         current: '',
         list: [],
+        other: 0,
         user_list: [],
         listLoading: true,
         listQuery: {
@@ -316,6 +329,9 @@
           }],
           Status: [{
             required: true, message: '状态必须填写！', trigger: 'blur'
+          }],
+          TaskName: [{
+            required: true, message: '任务名称必须填写！', trigger: 'blur'
           }]
 
         },
@@ -335,6 +351,9 @@
       this.getList()
     },
     methods: {
+      changeSwitch(data) {
+        console.log(data)
+      },
       buttonStatus(data, button) {
         if (data === undefined || data.length <= 0) {
           return false
