@@ -159,6 +159,7 @@
                 />
               </el-select>
             </el-form-item>
+
             <el-form-item label="使用时间类型" prop="UseTimeType">
               <el-select
                 v-model="temp.UseTimeType"
@@ -167,14 +168,18 @@
                 placeholder="请选择子任务"
               >
                 <el-option value="hour" label="小时" />
-                <el-option value="date" label="天" />
-                <el-option value="month" label="月" />
-                <el-option value="min" label="分钟" />
               </el-select>
             </el-form-item>
 
           </el-col>
           <el-col :span="10">
+            <el-form-item type="textarea" label="任务名称" prop="TaskName">
+              <el-input
+                v-model="temp.TaskName"
+                :autosize="{ minRows: 2, maxRows: 10}"
+                type="textarea"
+              />
+            </el-form-item>
             <el-form-item label="当前状态" prop="Status">
               <el-select
                 v-model="temp.Status"
@@ -423,7 +428,8 @@ export default {
         Status: '',
         RecordTime: '',
         CreateUser: '',
-        CommandUser: ''
+        CommandUser: '',
+        TaskName: ''
       }
     },
     handleCreate() {
