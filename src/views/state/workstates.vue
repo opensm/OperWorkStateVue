@@ -474,7 +474,7 @@
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
-        this.temp.CommandUser = this.current
+        // this.temp.CommandUser = this.current
 
         addState(this.temp).then(response => {
           const {meta} = response
@@ -501,7 +501,7 @@
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
-        this.temp.CommandUser = this.current
+        // this.temp.CommandUser = this.current
 
         updateState(this.temp.id, this.temp).then(response => {
           const {meta} = response
