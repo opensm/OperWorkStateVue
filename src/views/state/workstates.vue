@@ -173,7 +173,7 @@
 
           </el-col>
           <el-col :span="10">
-            <el-form-item type="textarea" label="任务名称" prop="TaskName">
+            <el-form-item type="input" label="任务名称" prop="TaskName">
               <el-input
                 v-model="temp.TaskName"
                 :autosize="{ minRows: 2, maxRows: 10}"
