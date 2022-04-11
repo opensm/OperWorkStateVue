@@ -193,7 +193,7 @@
               >
                 <el-option
                   v-for="item in this.status_list"
-                  :key="item.id"
+                  :key="item.StatusCode"
                   :value="item.StatusCode"
                   :label="item.StatusName"
                 />
