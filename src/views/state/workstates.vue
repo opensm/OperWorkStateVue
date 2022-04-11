@@ -213,10 +213,6 @@
             <el-form-item label="是否为他人创建">
               <el-switch
                 v-model="other"
-                on-text="是"
-                on-value="1"
-                off-text="否"
-                off-value="0"
                 @change="changeSwitch(other)"
                 active-color="#13ce66"
                 inactive-color="#ff4949">
