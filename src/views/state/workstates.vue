@@ -305,7 +305,7 @@
         projectList: [],
         current: '',
         list: [],
-        other: 0,
+        other: false,
         user_list: [],
         listLoading: true,
         listQuery: {
@@ -368,7 +368,6 @@
         } else {
           this.temp.CommandUser = this.current
         }
-        console.log(this.temp.CommandUser)
       },
       buttonStatus(data, button) {
         if (data === undefined || data.length <= 0) {
