@@ -277,20 +277,21 @@
     },
     filters: {
       statusFilter(status) {
-        const statusMap = {
-          'not_start': '任务还未开始',
-          'progressing': '任务执行中',
-          'success': '任务已完成',
-          'checked': '任务已核验'
-        }
+        // const statusMap = {
+        //   '10000': '任务还未开始',
+        //   '3': '任务执行中',
+        //   '10007': '任务已完成',
+        //   '10006': '任务已核验'
+        // }
+        const statusMap = process.env.TASK_STATUS
         return statusMap[status]
       },
       tagFilter(status) {
         const statusMap = {
-          'not_start': 'danger',
-          'progressing': 'warning',
-          'success': 'success',
-          'checked': 'primary'
+          '10000': 'danger',
+          '3': 'warning',
+          '10007': 'success',
+          '10006': 'primary'
         }
         return statusMap[status]
       }
@@ -498,7 +499,7 @@
         this.temp = Object.assign({}, row) // copy obj
         this.dialogStatus = 'update'
         this.dialogFormVisible = true
-        if (this.temp.CommandUser===this.temp.CreateUser) {
+        if (this.temp.CommandUser === this.temp.CreateUser) {
           this.other = false
         } else {
           this.other = true
