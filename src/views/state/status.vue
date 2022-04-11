@@ -52,12 +52,12 @@
           <span class="link-type">{{ row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目" align="center">
+      <el-table-column label="状态名称" align="center">
         <template slot-scope="{row}">
           <span class="link-type">{{ row.StatusName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="项目编码" align="center">
+      <el-table-column label="状态编码" align="center">
         <template slot-scope="{row}">
           <span>{{ row.StatusCode }}</span>
         </template>

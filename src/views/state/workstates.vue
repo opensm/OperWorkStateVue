@@ -70,7 +70,7 @@
         </el-table-column>
         <el-table-column label="当前状态" align="center">
           <template slot-scope="{row}">
-            <el-tag>{{ row.Status }}</el-tag>
+            <el-tag :type="row.status_fg">{{ row.status_st }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center">
@@ -275,28 +275,6 @@
     directives: {
       waves
     },
-    filters: {
-      statusFilter(status) {
-        // const statusMap = {
-        //   '10000': '任务还未开始',
-        //   '3': '任务执行中',
-        //   '10007': '任务已完成',
-        //   '10006': '任务已核验'
-        // }
-        const statusMap = process.env.TASK_STATUS
-        console.log(statusMap)
-        return statusMap[status + '']
-      },
-      tagFilter(status) {
-        const statusMap = {
-          '10000': 'danger',
-          '3': 'warning',
-          '10007': 'success',
-          '10006': 'primary'
-        }
-        return statusMap[status]
-      }
-    },
     data() {
       return {
         tableKey: 0,
@@ -365,7 +343,6 @@
     },
     methods: {
       changeSwitch(data) {
-        console.log(data)
         if (data === true) {
           this.getUser()
         } else {
@@ -415,10 +392,6 @@
           current_user().then(response => {
             this.current = response.data.id
           })
-        })
-        getGroupStates().then(response => {
-          // this.current = response.data.id
-          console.log(response)
         })
       },
       handleFilter() {
