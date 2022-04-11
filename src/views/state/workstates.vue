@@ -381,7 +381,6 @@
         getStatuses().then(response => {
           const {data} = response
           this.status_list = data
-          console.log(this.status_list)
         })
       },
       getList() {
@@ -401,6 +400,7 @@
           }, 1.5 * 1000)
           current_user().then(response => {
             this.current = response.data.id
+            this.CommandUser = this.current
           })
         })
       },
