@@ -363,12 +363,12 @@
     },
     methods: {
       changeSwitch(data) {
-        console.log(data)
         if (data === true) {
           this.getUser()
         } else {
           this.temp.CommandUser = this.current
         }
+        console.log(this.temp.CommandUser)
       },
       buttonStatus(data, button) {
         if (data === undefined || data.length <= 0) {
