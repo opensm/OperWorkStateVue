@@ -176,8 +176,7 @@
             <el-form-item type="input" label="任务名称" prop="TaskName">
               <el-input
                 v-model="temp.TaskName"
-                :autosize="{ minRows: 2, maxRows: 10}"
-                type="textarea"
+                type="input"
               />
             </el-form-item>
             <el-form-item label="当前状态" prop="Status">
