@@ -210,19 +210,15 @@
                 default-time="00:00:00"
               />
             </el-form-item>
+            <el-form-item label="是否为他人创建">
+              <el-switch
+                v-model="other"
+                @change="changeSwitch(other)"
+                active-color="#13ce66"
+                inactive-color="#ff4949">
+              </el-switch>
+            </el-form-item>
           </el-col>
-          <el-form-item label="是否为他人创建">
-            <el-switch
-              v-model="other"
-              on-text="是"
-              on-value="1"
-              off-text="否"
-              off-value="0"
-              @change="changeSwitch(other)"
-              active-color="#13ce66"
-              inactive-color="#ff4949">
-            </el-switch>
-          </el-form-item>
           <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
               <el-input
