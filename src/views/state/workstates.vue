@@ -178,6 +178,9 @@
                 default-time="00:00:00"
               />
             </el-form-item>
+            <el-form-item label="使用时间" prop="UseTimeType">
+              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12"/>
+            </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="任务名称" prop="TaskName">
@@ -207,10 +210,6 @@
                 default-time="00:00:00"
               />
             </el-form-item>
-            <el-form-item label="使用时间" prop="UseTimeType">
-              <el-input-number v-model="temp.UseTime" :precision="2" :step="0.1" :max="12"/>
-            </el-form-item>
-
           </el-col>
           <el-col :span="19">
             <el-form-item type="textarea" label="任务内容" prop="Content">
