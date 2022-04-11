@@ -220,14 +220,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="19">
-            <el-form-item  v-if="other" label="执行人" prop="CommandUser">
+            <el-form-item v-if="other" label="执行人" prop="CommandUser">
               <el-select
                 v-model="temp.CommandUser"
                 filterable
                 default-first-option
                 placeholder="请选择执行人"
               >
-                <el-option value="ddd" label="daaaa"/>
+                <el-option v-for="item in this.temp.user_list" :value="item.id" :label="item.username"/>
               </el-select>
             </el-form-item>
             <el-form-item type="textarea" label="任务内容" prop="Content">
