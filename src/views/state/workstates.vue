@@ -70,7 +70,7 @@
         </el-table-column>
         <el-table-column label="当前状态" align="center">
           <template slot-scope="{row}">
-            <el-tag :type="row.Status| tagFilter">{{ row.Status|statusFilter }}</el-tag>
+            <el-tag>{{ row.Status }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center">
