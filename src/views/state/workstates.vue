@@ -53,11 +53,6 @@
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <!--        <el-table-column label="任务内容" align="center">-->
-        <!--          <template slot-scope="{row}">-->
-        <!--            <span>{{ row.Content }}</span>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
         <el-table-column label="所属项目" align="center">
           <template slot-scope="{row}">
             {{ row.project_st }}
@@ -194,12 +189,18 @@
                 v-model="temp.Status"
                 filterable
                 default-first-option
-                placeholder="请选择子任务"
+                placeholder="请选择对应状态"
               >
-                <el-option value="not_start" label="未开始"/>
-                <el-option value="progressing" label="进行中"/>
-                <el-option value="success" label="已完成"/>
-                <el-option value="checked" label="已核验"/>
+                <el-option
+                  v-for="item in this.status_list"
+                  :key="item.id"
+                  :value="item.StatusCode"
+                  :label="item.StatusName"
+                />
+                <!--                <el-option value="not_start" label="未开始"/>-->
+                <!--                <el-option value="progressing" label="进行中"/>-->
+                <!--                <el-option value="success" label="已完成"/>-->
+                <!--                <el-option value="checked" label="已核验"/>-->
               </el-select>
             </el-form-item>
             <el-form-item label="结束时间" prop="FinishTime">
@@ -261,6 +262,7 @@
   import {
     getStates, deleteState, updateState, addState, getGroupStates
   } from '@/api/workstates'
+  import {getStatuses} from '@/api/status'
   import waves from '@/directive/waves' // waves directive
   import {getProjects} from '@/api/project'
   import {current_user, getUsersInfo} from '@/api/user'
@@ -286,6 +288,7 @@
         current: '',
         list: [],
         other: false,
+        status_list: [],
         user_list: [],
         listLoading: true,
         listQuery: {
@@ -340,6 +343,7 @@
     },
     created() {
       this.getList()
+      this.getStatus()
     },
     methods: {
       changeSwitch(data) {
@@ -372,6 +376,12 @@
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
+        })
+      },
+      getStatus() {
+        getStatuses().then(response => {
+          const data = response
+          this.status_list = data
         })
       },
       getList() {
