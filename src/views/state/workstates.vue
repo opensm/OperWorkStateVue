@@ -227,7 +227,12 @@
                 default-first-option
                 placeholder="请选择执行人"
               >
-                <el-option v-for="item in this.temp.user_list" :value="item.id" :label="item.username"/>
+                <el-option
+                  v-for="item in this.user_list"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
             <el-form-item type="textarea" label="任务内容" prop="Content">
