@@ -361,6 +361,7 @@
         }
       },
       getProject() {
+        this.listLoading = true
         getProjects().then(response => {
           this.projectList = response.data
           // Just to simulate the time of the request
@@ -370,6 +371,7 @@
         })
       },
       getUser() {
+        this.listLoading = true
         getUsersInfo().then(response => {
           this.user_list = response.data
           // Just to simulate the time of the request
@@ -379,9 +381,14 @@
         })
       },
       getStatus() {
+        this.listLoading = true
         getStatuses().then(response => {
           const {data} = response
           this.status_list = data
+          // Just to simulate the time of the request
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
         })
       },
       getList() {
@@ -460,6 +467,7 @@
         this.temp.CommandUser = this.current
       },
       createData() {
+        this.listLoading = true
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
@@ -467,15 +475,15 @@
         addState(this.temp).then(response => {
           const {meta} = response
           this.list.unshift(this.temp)
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
           this.$notify({
             title: '成功',
             message: meta.msg,
             type: 'success',
             duration: 2000
           })
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
           this.dialogFormVisible = false
           this.handleFilter()
         })
@@ -494,23 +502,23 @@
         }
       },
       updateData() {
+        this.listLoading = true
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
-
         updateState(this.temp.id, this.temp).then(response => {
           const {meta} = response
           const index = this.list.findIndex(v => v.id === this.temp.id)
           this.list.splice(index, 1, this.temp)
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
           this.$notify({
             title: '成功',
             message: meta.msg,
             type: 'success',
             duration: 2000
           })
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
           this.handleFilter()
           this.dialogFormVisible = false
         })
@@ -522,10 +530,15 @@
           type: 'warning'
         })
           .then(() => {
+            this.listLoading = true
             deleteState(row.id).then(response => {
               const {meta} = response
               const {id, Content} = row
               this.list.splice(index, 1)
+              setTimeout(() => {
+                this.listLoading = false
+              }, 1.5 * 1000)
+              this.handleFilter()
               this.$notify({
                 title: '成功',
                 dangerouslyUseHTMLString: true,
@@ -535,10 +548,6 @@
             <div>返回信息: ${meta.msg}</div>`,
                 type: 'success'
               })
-              setTimeout(() => {
-                this.listLoading = false
-              }, 1.5 * 1000)
-              this.handleFilter()
             })
           })
           .catch(err => {

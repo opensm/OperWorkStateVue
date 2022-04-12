@@ -417,6 +417,10 @@ export default {
               type: 'success',
               duration: 2000
             })
+            // Just to simulate the time of the request
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.dialogFormVisible = false
             this.handleFilter()
           })
@@ -446,6 +450,10 @@ export default {
               type: 'success',
               duration: 2000
             })
+            // Just to simulate the time of the request
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.handleFilter()
             this.dialogFormVisible = false
           })
@@ -462,11 +470,11 @@ export default {
           type: 'success',
           duration: 2000
         })
-        this.handleFilter()
         // Just to simulate the time of the request
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+        this.handleFilter()
       })
     },
     getSortClass: function(key) {
