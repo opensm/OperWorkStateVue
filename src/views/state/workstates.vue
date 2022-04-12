@@ -380,7 +380,7 @@ export default {
     getStatus() {
       this.listLoading = true
       getStatuses().then(response => {
-        const {data} = response
+        const { data } = response
         this.status_list = data
         // Just to simulate the time of the request
         setTimeout(() => {
@@ -470,7 +470,7 @@ export default {
       this.temp.CreateUser = this.current
 
       addState(this.temp).then(response => {
-        const {meta} = response
+        const { meta } = response
         this.list.unshift(this.temp)
         setTimeout(() => {
           this.listLoading = false
@@ -504,7 +504,7 @@ export default {
       this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
       this.temp.CreateUser = this.current
       updateState(this.temp.id, this.temp).then(response => {
-        const {meta} = response
+        const { meta } = response
         const index = this.list.findIndex(v => v.id === this.temp.id)
         this.list.splice(index, 1, this.temp)
         setTimeout(() => {
@@ -529,8 +529,8 @@ export default {
         .then(() => {
           this.listLoading = true
           deleteState(row.id).then(response => {
-            const {meta} = response
-            const {id, Content} = row
+            const { meta } = response
+            const { id, Content } = row
             this.list.splice(index, 1)
             setTimeout(() => {
               this.listLoading = false
