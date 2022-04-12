@@ -260,15 +260,12 @@
 </template>
 
 <script>
-  import {
-    getStates, deleteState, updateState, addState, getGroupStates
-  } from '@/api/workstates'
-  import {getStatuses} from '@/api/status'
+  import { getStates, deleteState, updateState, addState } from '@/api/workstates'
+  import { getStatuses } from '@/api/status'
   import waves from '@/directive/waves' // waves directive
   import {getProjects} from '@/api/project'
   import {current_user, getUsersInfo} from '@/api/user'
   import Pagination from '@/components/Pagination'
-  // import '/node_modules/@braid/vue-formulate/themes/snow/snow.scss'
 
   export default {
     name: 'ComplexTable',
