@@ -197,7 +197,7 @@
                 placeholder="请选择对应状态"
               >
                 <el-option
-                  v-for="item in this.status_list"
+                  v-for="item in status_list"
                   :key="item.id"
                   :value="item.id"
                   :label="item.StatusName"
@@ -215,9 +215,10 @@
             <el-form-item label="是否为他人创建">
               <el-switch
                 v-model="other"
-                @change="changeSwitch($event)"
                 active-color="#13ce66"
-                inactive-color="#ff4949">
+                inactive-color="#ff4949"
+                @change="changeSwitch($event)"
+              >
               </el-switch>
             </el-form-item>
           </el-col>
