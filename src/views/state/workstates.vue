@@ -267,296 +267,296 @@ import { getProjects } from '@/api/project'
 import { current_user, getUsersInfo } from '@/api/user'
 import Pagination from '@/components/Pagination'
 
-  export default {
-    name: 'ComplexTable',
-    components: {
-      Pagination
-    },
-    directives: {
-      waves
-    },
-    data() {
-      return {
-        tableKey: 0,
-        total: 0,
-        temp: {},
-        post: true,
-        project: [],
-        projectList: [],
-        current: '',
-        list: [],
-        other: false,
-        status_list: [],
-        user_list: [],
-        listLoading: true,
-        listQuery: {
-          page: 1,
-          limit: 10,
-          sort: '-id',
-          Project: ''
-        },
-        sortOptions: [{
-          label: 'ID 正序', key: '+id'
-        }, {
-          label: 'ID 逆序', key: '-id'
+export default {
+  name: 'ComplexTable',
+  components: {
+    Pagination
+  },
+  directives: {
+    waves
+  },
+  data() {
+    return {
+      tableKey: 0,
+      total: 0,
+      temp: {},
+      post: true,
+      project: [],
+      projectList: [],
+      current: '',
+      list: [],
+      other: false,
+      status_list: [],
+      user_list: [],
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 10,
+        sort: '-id',
+        Project: ''
+      },
+      sortOptions: [{
+        label: 'ID 正序', key: '+id'
+      }, {
+        label: 'ID 逆序', key: '-id'
+      }],
+      rules: {
+        Content: [{
+          required: true, message: '任务内容必须填写！', trigger: 'blur'
         }],
-        rules: {
-          Content: [{
-            required: true, message: '任务内容必须填写！', trigger: 'blur'
-          }],
-          Project: [{
-            required: true, message: '项目必须填写！', trigger: 'blur'
-          }],
-          UseTime: [{
-            required: true, message: '使用时长必须填写！', trigger: 'blur'
-          }],
-          UseTimeType: [{
-            required: true, message: '使用时长类型必须填写！', trigger: 'blur'
-          }],
-          StartTime: [{
-            required: true, message: '开始时间必须填写！', trigger: 'blur'
-          }],
-          FinishTime: [{
-            required: true, message: '结束时间必须填写！', trigger: 'blur'
-          }],
-          Status: [{
-            required: true, message: '状态必须填写！', trigger: 'blur'
-          }],
-          TaskName: [{
-            required: true, message: '任务名称必须填写！', trigger: 'blur'
-          }]
+        Project: [{
+          required: true, message: '项目必须填写！', trigger: 'blur'
+        }],
+        UseTime: [{
+          required: true, message: '使用时长必须填写！', trigger: 'blur'
+        }],
+        UseTimeType: [{
+          required: true, message: '使用时长类型必须填写！', trigger: 'blur'
+        }],
+        StartTime: [{
+          required: true, message: '开始时间必须填写！', trigger: 'blur'
+        }],
+        FinishTime: [{
+          required: true, message: '结束时间必须填写！', trigger: 'blur'
+        }],
+        Status: [{
+          required: true, message: '状态必须填写！', trigger: 'blur'
+        }],
+        TaskName: [{
+          required: true, message: '任务名称必须填写！', trigger: 'blur'
+        }]
 
-        },
-        showReviewer: false,
-        dialogFormVisible: false,
-        dialogStatus: '',
-        textMap: {
-          update: '修改子任务',
-          create: '添加子任务'
-        },
-        dialogPvVisible: false,
-        pvData: [],
-        downloadLoading: false
+      },
+      showReviewer: false,
+      dialogFormVisible: false,
+      dialogStatus: '',
+      textMap: {
+        update: '修改子任务',
+        create: '添加子任务'
+      },
+      dialogPvVisible: false,
+      pvData: [],
+      downloadLoading: false
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    changeSwitch(data) {
+      if (data === true) {
+        this.getUser()
+      } else {
+        this.temp.CommandUser = this.current
       }
     },
-    created() {
+    buttonStatus(data, button) {
+      if (data === undefined || data.length <= 0) {
+        return false
+      } else {
+        return data.includes(button)
+      }
+    },
+    getProject() {
+      this.listLoading = true
+      getProjects().then(response => {
+        this.projectList = response.data
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
+    getUser() {
+      this.listLoading = true
+      getUsersInfo().then(response => {
+        this.user_list = response.data
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
+    getStatus() {
+      this.listLoading = true
+      getStatuses().then(response => {
+        const {data} = response
+        this.status_list = data
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+      })
+    },
+    getList() {
+      this.listLoading = true
+      // 重置选择上的空
+      if (this.listQuery.Project === '') {
+        this.listQuery.Project = undefined
+      }
+      getStates(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.total
+        this.post = response.meta.post_tag
+
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+        current_user().then(response => {
+          this.current = response.data.id
+        })
+      })
+    },
+    handleFilter() {
+      this.listQuery.page = 1
       this.getList()
     },
-    methods: {
-      changeSwitch(data) {
-        if (data === true) {
-          this.getUser()
-        } else {
-          this.temp.CommandUser = this.current
-        }
-      },
-      buttonStatus(data, button) {
-        if (data === undefined || data.length <= 0) {
-          return false
-        } else {
-          return data.includes(button)
-        }
-      },
-      getProject() {
-        this.listLoading = true
-        getProjects().then(response => {
-          this.projectList = response.data
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      getUser() {
-        this.listLoading = true
-        getUsersInfo().then(response => {
-          this.user_list = response.data
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      getStatus() {
-        this.listLoading = true
-        getStatuses().then(response => {
-          const {data} = response
-          this.status_list = data
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-        })
-      },
-      getList() {
-        this.listLoading = true
-        // 重置选择上的空
-        if (this.listQuery.Project === '') {
-          this.listQuery.Project = undefined
-        }
-        getStates(this.listQuery).then(response => {
-          this.list = response.data
-          this.total = response.total
-          this.post = response.meta.post_tag
+    handleModifyStatus(row, status) {
+      this.$message({
+        message: '操作成功！',
+        type: 'success'
+      })
+      row.status = status
+    },
+    sortChange(data) {
+      const {
+        prop, order
+      } = data
+      if (prop === 'id') {
+        this.sortByID(order)
+      }
+    },
+    sortByID(order) {
+      if (order === 'ascending') {
+        this.listQuery.sort = '+id'
+      } else {
+        this.listQuery.sort = '-id'
+      }
+      this.handleFilter()
+    },
+    resetTemp() {
+      this.projectList = []
+      this.user_list = []
+      this.temp = {
+        id: undefined,
+        Content: '',
+        project: '',
+        UseTime: '',
+        UseTimeType: '',
+        StartTime: '',
+        FinishTime: '',
+        Status: '',
+        RecordTime: '',
+        CreateUser: '',
+        CommandUser: '',
+        TaskName: ''
+      }
+    },
+    handleCreate() {
+      this.resetTemp()
+      this.getProject()
+      this.getUser()
+      this.getStatus()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.other = false
+      this.temp.CommandUser = this.current
+    },
+    createData() {
+      this.listLoading = true
+      this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
+      this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
+      this.temp.CreateUser = this.current
 
-          // Just to simulate the time of the request
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-          current_user().then(response => {
-            this.current = response.data.id
-          })
+      addState(this.temp).then(response => {
+        const {meta} = response
+        this.list.unshift(this.temp)
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+        this.$notify({
+          title: '成功',
+          message: meta.msg,
+          type: 'success',
+          duration: 2000
         })
-      },
-      handleFilter() {
-        this.listQuery.page = 1
-        this.getList()
-      },
-      handleModifyStatus(row, status) {
-        this.$message({
-          message: '操作成功！',
-          type: 'success'
-        })
-        row.status = status
-      },
-      sortChange(data) {
-        const {
-          prop, order
-        } = data
-        if (prop === 'id') {
-          this.sortByID(order)
-        }
-      },
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = '+id'
-        } else {
-          this.listQuery.sort = '-id'
-        }
+        this.dialogFormVisible = false
         this.handleFilter()
-      },
-      resetTemp() {
-        this.projectList = []
-        this.user_list = []
-        this.temp = {
-          id: undefined,
-          Content: '',
-          project: '',
-          UseTime: '',
-          UseTimeType: '',
-          StartTime: '',
-          FinishTime: '',
-          Status: '',
-          RecordTime: '',
-          CreateUser: '',
-          CommandUser: '',
-          TaskName: ''
-        }
-      },
-      handleCreate() {
-        this.resetTemp()
-        this.getProject()
-        this.getUser()
-        this.getStatus()
-        this.dialogStatus = 'create'
-        this.dialogFormVisible = true
+      })
+    },
+    handleUpdate(row) {
+      this.getProject()
+      this.getUser()
+      this.getStatus()
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+      if (this.temp.CommandUser === this.temp.CreateUser) {
         this.other = false
-        this.temp.CommandUser = this.current
-      },
-      createData() {
-        this.listLoading = true
-        this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
-        this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
-        this.temp.CreateUser = this.current
-
-        addState(this.temp).then(response => {
-          const {meta} = response
-          this.list.unshift(this.temp)
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-          this.$notify({
-            title: '成功',
-            message: meta.msg,
-            type: 'success',
-            duration: 2000
-          })
-          this.dialogFormVisible = false
-          this.handleFilter()
+      } else {
+        this.other = true
+      }
+    },
+    updateData() {
+      this.listLoading = true
+      this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
+      this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
+      this.temp.CreateUser = this.current
+      updateState(this.temp.id, this.temp).then(response => {
+        const {meta} = response
+        const index = this.list.findIndex(v => v.id === this.temp.id)
+        this.list.splice(index, 1, this.temp)
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
+        this.$notify({
+          title: '成功',
+          message: meta.msg,
+          type: 'success',
+          duration: 2000
         })
-      },
-      handleUpdate(row) {
-        this.getProject()
-        this.getUser()
-        this.getStatus()
-        this.temp = Object.assign({}, row) // copy obj
-        this.dialogStatus = 'update'
-        this.dialogFormVisible = true
-        if (this.temp.CommandUser === this.temp.CreateUser) {
-          this.other = false
-        } else {
-          this.other = true
-        }
-      },
-      updateData() {
-        this.listLoading = true
-        this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
-        this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
-        this.temp.CreateUser = this.current
-        updateState(this.temp.id, this.temp).then(response => {
-          const {meta} = response
-          const index = this.list.findIndex(v => v.id === this.temp.id)
-          this.list.splice(index, 1, this.temp)
-          setTimeout(() => {
-            this.listLoading = false
-          }, 1.5 * 1000)
-          this.$notify({
-            title: '成功',
-            message: meta.msg,
-            type: 'success',
-            duration: 2000
-          })
-          this.handleFilter()
-          this.dialogFormVisible = false
-        })
-      },
-      handleDelete(row, index) {
-        this.$confirm('确认都删除该密钥?', '提示', {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning'
-        })
-          .then(() => {
-            this.listLoading = true
-            deleteState(row.id).then(response => {
-              const {meta} = response
-              const {id, Content} = row
-              this.list.splice(index, 1)
-              setTimeout(() => {
-                this.listLoading = false
-              }, 1.5 * 1000)
-              this.handleFilter()
-              this.$notify({
-                title: '成功',
-                dangerouslyUseHTMLString: true,
-                message: `
+        this.handleFilter()
+        this.dialogFormVisible = false
+      })
+    },
+    handleDelete(row, index) {
+      this.$confirm('确认都删除该密钥?', '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.listLoading = true
+          deleteState(row.id).then(response => {
+            const {meta} = response
+            const {id, Content} = row
+            this.list.splice(index, 1)
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
+            this.handleFilter()
+            this.$notify({
+              title: '成功',
+              dangerouslyUseHTMLString: true,
+              message: `
             <div>ID: ${id}</div>
             <div>子任务名称: ${Content}</div>
             <div>返回信息: ${meta.msg}</div>`,
-                type: 'success'
-              })
+              type: 'success'
             })
           })
-          .catch(err => {
-            console.error(err)
-          })
-      },
-      getSortClass: function (key) {
-        const sort = this.listQuery.sort
-        return sort === `+${key}` ? 'ascending' : 'descending'
-      }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    },
+    getSortClass: function (key) {
+      const sort = this.listQuery.sort
+      return sort === `+${key}` ? 'ascending' : 'descending'
     }
   }
+}
 </script>
 
 <style>
