@@ -417,6 +417,9 @@ export default {
               type: 'success',
               duration: 2000
             })
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.dialogFormVisible = false
             this.handleFilter()
           })
@@ -447,6 +450,9 @@ export default {
               duration: 2000
             })
             this.handleFilter()
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.dialogFormVisible = false
           })
         }

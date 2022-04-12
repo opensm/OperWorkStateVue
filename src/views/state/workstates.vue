@@ -251,7 +251,7 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+        <el-button type="primary" :loading="listLoading" @click="dialogStatus==='create'?createData():updateData()">
           确认
         </el-button>
       </div>
@@ -463,7 +463,6 @@
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
-        // this.temp.CommandUser = this.current
 
         addState(this.temp).then(response => {
           const {meta} = response
@@ -474,12 +473,14 @@
             type: 'success',
             duration: 2000
           })
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
           this.dialogFormVisible = false
           this.handleFilter()
         })
       },
       handleUpdate(row) {
-        // this.resetTemp()
         this.getProject()
         this.getUser()
         this.getStatus()
@@ -496,7 +497,6 @@
         this.temp.startTime = this.moment(this.temp.startTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.FinishTime = this.moment(this.temp.FinishTime).format('YYYY-MM-DD HH:mm:ss')
         this.temp.CreateUser = this.current
-        // this.temp.CommandUser = this.current
 
         updateState(this.temp.id, this.temp).then(response => {
           const {meta} = response
@@ -508,6 +508,10 @@
             type: 'success',
             duration: 2000
           })
+          setTimeout(() => {
+            this.listLoading = false
+          }, 1.5 * 1000)
+          this.handleFilter()
           this.dialogFormVisible = false
         })
       },
@@ -531,7 +535,10 @@
             <div>返回信息: ${meta.msg}</div>`,
                 type: 'success'
               })
-              this.dialogVisible = false
+              setTimeout(() => {
+                this.listLoading = false
+              }, 1.5 * 1000)
+              this.handleFilter()
             })
           })
           .catch(err => {
