@@ -319,10 +319,14 @@
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            // this.temp.task_time = this.moment(this.temp.task_time).format('YYYY-MM-DD HH:mm:ss')
+            this.listLoading = true
             addStatuses(this.temp).then(response => {
               const {meta} = response
               this.list.unshift(this.temp)
+              // Just to simulate the time of the request
+              setTimeout(() => {
+                this.listLoading = false
+              }, 1.5 * 1000)
               this.$notify({
                 title: '成功',
                 message: meta.msg,
@@ -347,11 +351,16 @@
       updateData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
+            this.listLoading = true
             const tempData = Object.assign({}, this.temp)
             updateStatus(tempData.id, tempData).then(response => {
               const {meta} = response
               const index = this.list.findIndex(v => v.id === this.temp.id)
               this.list.splice(index, 1, this.temp)
+              // Just to simulate the time of the request
+              setTimeout(() => {
+                this.listLoading = false
+              }, 1.5 * 1000)
               this.$notify({
                 title: '成功',
                 message: meta.msg,
@@ -370,10 +379,15 @@
           type: 'warning'
         })
           .then(() => {
+            this.listLoading = true
             deleteStatus(row.id).then(response => {
               const {meta} = response
               const {id, StatusName} = row
               this.list.splice(index, 1)
+              // Just to simulate the time of the request
+              setTimeout(() => {
+                this.listLoading = false
+              }, 1.5 * 1000)
               this.$notify({
                 title: '成功',
                 dangerouslyUseHTMLString: true,
@@ -384,11 +398,7 @@
                 type: 'success'
               })
               this.dialogFormVisible = false
-              // this.handleFilter()
-              // Just to simulate the time of the request
-              setTimeout(() => {
-                this.listLoading = false
-              }, 1.5 * 1000)
+              this.handleFilter()
             })
           })
           .catch(err => {

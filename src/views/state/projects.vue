@@ -219,9 +219,9 @@ export default {
     this.getList()
   },
   methods: {
-    handleView(row) {
-      this.$router.push({ path: '/state/project', query: { task_id: row.id }})
-    },
+    // handleView(row) {
+    //   this.$router.push({ path: '/state/project', query: { task_id: row.id }})
+    // },
     buttonStatus(data, button) {
       if (data === undefined || data.length <= 0) {
         return false
@@ -290,10 +290,13 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          // this.temp.task_time = this.moment(this.temp.task_time).format('YYYY-MM-DD HH:mm:ss')
+          this.listLoading = true
           addProject(this.temp).then(response => {
             const { meta } = response
             this.list.unshift(this.temp)
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               message: meta.msg,
@@ -318,11 +321,15 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.listLoading = true
           const tempData = Object.assign({}, this.temp)
           updateProject(tempData.id, tempData).then(response => {
             const { meta } = response
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               message: meta.msg,
@@ -341,10 +348,14 @@ export default {
         type: 'warning'
       })
         .then(() => {
+          this.listLoading = true
           deleteProject(row.id).then(response => {
             const { meta } = response
             const { id, ProjectName } = row
             this.list.splice(index, 1)
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               dangerouslyUseHTMLString: true,
@@ -355,11 +366,7 @@ export default {
               type: 'success'
             })
             this.dialogFormVisible = false
-            // this.handleFilter()
-            // Just to simulate the time of the request
-            setTimeout(() => {
-              this.listLoading = false
-            }, 1.5 * 1000)
+            this.handleFilter()
           })
         })
         .catch(err => {

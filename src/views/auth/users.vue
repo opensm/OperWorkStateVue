@@ -326,8 +326,13 @@ export default {
   },
   methods: {
     getRoles() {
+      this.listLoading = true
       getRoles().then(response => {
         this.role = response.data
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
     },
     getList() {
@@ -407,20 +412,20 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          this.listLoading = true
           addUser(this.temp).then(response => {
             const { data } = response
             this.list.unshift(this.temp)
+            // Just to simulate the time of the request
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               message: '创建用户成功,用户名:' + data.username,
               type: 'success',
               duration: 2000
             })
-            // Just to simulate the time of the request
-            setTimeout(() => {
-              this.listLoading = false
-            }, 1.5 * 1000)
             this.dialogFormVisible = false
             this.handleFilter()
           })
@@ -439,21 +444,23 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.listLoading = true
           const tempData = Object.assign({}, this.temp)
           updateUser(tempData.id, tempData).then(response => {
             const { data, meta } = response
             const index = this.list.findIndex(v => v.id === this.temp.id)
             this.list.splice(index, 1, this.temp)
+            // Just to simulate the time of the request
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               message: meta.msg + ',用户名:' + data.username,
               type: 'success',
               duration: 2000
             })
-            // Just to simulate the time of the request
-            setTimeout(() => {
-              this.listLoading = false
-            }, 1.5 * 1000)
+
             this.handleFilter()
             this.dialogFormVisible = false
           })
@@ -461,19 +468,20 @@ export default {
       })
     },
     handleDelete(row, index) {
+      this.listLoading = true
       deleteUser(row.id).then(response => {
         const { meta, data } = response.data
         this.list.splice(index, 1, this.temp)
+        // Just to simulate the time of the request
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
         this.$notify({
           title: '成功',
           message: meta.msg + ',用户名:' + data.username,
           type: 'success',
           duration: 2000
         })
-        // Just to simulate the time of the request
-        setTimeout(() => {
-          this.listLoading = false
-        }, 1.5 * 1000)
         this.handleFilter()
       })
     },

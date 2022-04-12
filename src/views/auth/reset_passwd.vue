@@ -48,6 +48,7 @@ export default {
     }
     return {
       user: '',
+      listLoading: true,
       checkStrictly: false,
       temp: {
         'oldPassword': '',
@@ -91,17 +92,25 @@ export default {
   },
   methods: {
     getCurrentUser() {
+      this.listLoading = true
       current_user().then(response => {
         const { data } = response
         this.user = data.name
+        setTimeout(() => {
+          this.listLoading = false
+        }, 1.5 * 1000)
       })
     },
     // Reshape the routes structure so that it looks the same as the sidebar
     confirmRole() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
+          this.listLoading = true
           resetPassword(this.temp).then(response => {
             const { meta } = response
+            setTimeout(() => {
+              this.listLoading = false
+            }, 1.5 * 1000)
             this.$notify({
               title: '成功',
               dangerouslyUseHTMLString: true,
