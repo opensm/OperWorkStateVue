@@ -230,7 +230,7 @@
                 placeholder="请选择执行人"
               >
                 <el-option
-                  v-for="item in this.user_list"
+                  v-for="item in user_list"
                   :key="item.id"
                   :label="item.name"
                   :value="item.id"
@@ -260,9 +260,9 @@
 </template>
 
 <script>
-  import { getStates, deleteState, updateState, addState } from '@/api/workstates'
-  import { getStatuses } from '@/api/status'
-  import waves from '@/directive/waves' // waves directive
+  import {getStates, deleteState, updateState, addState} from '@/api/workstates'
+  import {getStatuses} from '@/api/status'
+  import waves from '@/directive/waves'
   import {getProjects} from '@/api/project'
   import {current_user, getUsersInfo} from '@/api/user'
   import Pagination from '@/components/Pagination'
