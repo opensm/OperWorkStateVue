@@ -260,12 +260,12 @@
 </template>
 
 <script>
-  import {getStates, deleteState, updateState, addState} from '@/api/workstates'
-  import {getStatuses} from '@/api/status'
-  import waves from '@/directive/waves'
-  import {getProjects} from '@/api/project'
-  import {current_user, getUsersInfo} from '@/api/user'
-  import Pagination from '@/components/Pagination'
+import { getStates, deleteState, updateState, addState } from '@/api/workstates'
+import { getStatuses } from '@/api/status'
+import waves from '@/directive/waves'
+import { getProjects } from '@/api/project'
+import { current_user, getUsersInfo } from '@/api/user'
+import Pagination from '@/components/Pagination'
 
   export default {
     name: 'ComplexTable',
