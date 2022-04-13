@@ -14,9 +14,9 @@
       <el-table-column
         prop="date"
         label="序号"
-        width="150" align="center">
+        width="150">
       </el-table-column>
-      <el-table-column label="运维部门信息" align="center">
+      <el-table-column label="运维部门信息">
         <el-table-column
           prop="name"
           label="所属部门"
@@ -32,18 +32,18 @@
           label="岗位"
           width="120">
         </el-table-column>
-      </el-table-column>
-      <el-table-column label="P102" align="center">
-        <el-table-column
+        <el-table-column  v-for="pro in projectList" :label="pro">
+          <el-table-column
             prop="province"
             label="任务"
             width="120">
-        </el-table-column>
-        <el-table-column
+          </el-table-column>
+          <el-table-column
             prop="city"
             label="用时/h"
             width="120">
           </el-table-column>
+        </el-table-column>
       </el-table-column>
     </el-table>
   </div>
@@ -156,8 +156,8 @@
               radius: '55%',
               center: ['50%', '60%'],
               data: [
-                {value: 1, name: 'xiaoxiaoyiguo'},
-                {value: 7, name: 'ddddd'},
+                {value: 1, name: 'P102'},
+                {value: 7, name: 'P301'},
               ],
               emphasis: {
                 itemStyle: {
@@ -197,7 +197,8 @@
             {type: 'bar'}
           ]
         },
-        projectList: []
+        projectList: [],
+        groupList: []
       }
     },
     computed: {
@@ -223,7 +224,8 @@
           data.map(item => {
             this.projectList.push(item.Project)
           })
-          console.log(data)
+            this.groupList = [...new Set(data)]
+          console.log(this.groupList)
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
