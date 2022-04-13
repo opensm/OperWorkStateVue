@@ -32,18 +32,18 @@
           label="岗位"
           width="120">
         </el-table-column>
-        <el-table-column label="P102">
-          <el-table-column
+      </el-table-column>
+      <el-table-column label="P102">
+        <el-table-column
             prop="province"
             label="任务"
             width="120">
-          </el-table-column>
-          <el-table-column
+        </el-table-column>
+        <el-table-column
             prop="city"
             label="用时/h"
             width="120">
           </el-table-column>
-        </el-table-column>
       </el-table-column>
     </el-table>
   </div>
