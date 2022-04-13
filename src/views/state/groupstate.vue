@@ -221,7 +221,7 @@
         getGroupStates().then(response => {
           const { data } = response
           data.map(item => {
-            this.projectList.push(item.project_st)
+            this.projectList.push(item.Project)
           })
           console.log(data)
           setTimeout(() => {
