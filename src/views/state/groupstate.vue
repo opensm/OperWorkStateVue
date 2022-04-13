@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-row :gutter="0">
       <el-col :span="12" :style="{ marginBottom: '12px' }">
         <v-chart class="chart" :option="projects"/>
