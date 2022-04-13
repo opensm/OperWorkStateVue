@@ -13,24 +13,34 @@
       style="width: 100%">
       <el-table-column
         prop="date"
-        label="日期"
+        label="序号"
         width="150">
       </el-table-column>
-      <el-table-column label="配送信息">
+      <el-table-column label="运维部门信息">
         <el-table-column
           prop="name"
-          label="姓名"
+          label="所属部门"
           width="120">
         </el-table-column>
-        <el-table-column label="地址">
+        <el-table-column
+          prop="name"
+          label="花名"
+          width="120">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="岗位"
+          width="120">
+        </el-table-column>
+        <el-table-column label="P102">
           <el-table-column
             prop="province"
-            label="省份"
+            label="任务"
             width="120">
           </el-table-column>
           <el-table-column
             prop="city"
-            label="市区"
+            label="用时/h"
             width="120">
           </el-table-column>
           <el-table-column
