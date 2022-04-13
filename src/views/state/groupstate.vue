@@ -32,7 +32,7 @@
           label="岗位"
           width="120">
         </el-table-column>
-        <el-table-column  v-for="pro in projectList" :label="pro">
+        <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
           <el-table-column
             prop="province"
             label="任务"
