@@ -218,6 +218,7 @@
     },
     methods: {
       getTotalState() {
+        this.projectList=[]
         this.listLoading = true
         getGroupStates().then(response => {
           const { data } = response
