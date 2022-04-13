@@ -43,16 +43,6 @@
             label="用时/h"
             width="120">
           </el-table-column>
-          <el-table-column
-            prop="address"
-            label="地址"
-            width="300">
-          </el-table-column>
-          <el-table-column
-            prop="zip"
-            label="邮编"
-            width="120">
-          </el-table-column>
         </el-table-column>
       </el-table-column>
     </el-table>
@@ -223,15 +213,17 @@
     },
     created() {
       this.getTotalState()
+      console.log(this.projectList)
     },
     methods: {
       getTotalState() {
         this.listLoading = true
         getGroupStates().then(response => {
-          const {data} = response
+          const { data } = response
           data.map(item => {
             this.projectList.push(item.Project)
           })
+          console.log(data)
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
