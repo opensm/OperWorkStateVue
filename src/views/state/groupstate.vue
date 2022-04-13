@@ -14,9 +14,9 @@
       <el-table-column
         prop="date"
         label="序号"
-        width="150">
+        width="150" align="center">
       </el-table-column>
-      <el-table-column label="运维部门信息">
+      <el-table-column label="运维部门信息" align="center">
         <el-table-column
           prop="name"
           label="所属部门"
@@ -33,7 +33,7 @@
           width="120">
         </el-table-column>
       </el-table-column>
-      <el-table-column label="P102">
+      <el-table-column label="P102" align="center">
         <el-table-column
             prop="province"
             label="任务"
@@ -156,8 +156,8 @@
               radius: '55%',
               center: ['50%', '60%'],
               data: [
-                {value: 1, name: 'P102'},
-                {value: 7, name: 'P301'},
+                {value: 1, name: 'xiaoxiaoyiguo'},
+                {value: 7, name: 'ddddd'},
               ],
               emphasis: {
                 itemStyle: {
