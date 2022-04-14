@@ -133,7 +133,7 @@ export default {
           console.log(1111111111111111111)
           console.log(index)
           console.log(2222222222222222222)
-          if (index !== -1){
+          if (index === -1){
             this.projectList.push(item.Project)
           }
         })
