@@ -1,13 +1,5 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="0">
-      <el-col :span="12" :style="{ marginBottom: '12px' }">
-        <v-chart class="chart" :option="projects"/>
-      </el-col>
-      <el-col :span="12" :style="{ marginBottom: '12px' }">
-        <v-chart class="chart" :option="option"/>
-      </el-col>
-    </el-row>
     <el-table
       :data="tableData"
       style="width: 100%">
@@ -47,7 +39,6 @@
       </el-table-column>
     </el-table>
   </div>
-
 </template>
 
 <script>
