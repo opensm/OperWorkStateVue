@@ -234,10 +234,10 @@
             this.listLoading = false
           }, 1.5 * 1000)
           this.groupList = [...new Set(JSON.parse(JSON.stringify(data)))]
+          console.log(this.projectList)
+          console.log(this.groupList)
         })
         // this.projectList = JSON.parse(JSON.stringify(this.projectList))
-        console.log(this.projectList)
-        console.log(this.groupList)
       },
     }
   }
