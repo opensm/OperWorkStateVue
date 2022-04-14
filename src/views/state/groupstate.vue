@@ -222,7 +222,10 @@
         getGroupStates().then(response => {
           const { data } = response
           data.map(item => {
-            this.projectList.push(item.Project)
+            let index = this.projectList.indexOf(item.Project)
+            if (index !== -1){
+              this.projectList.push(item.Project)
+            }
           })
           setTimeout(() => {
             this.listLoading = false
