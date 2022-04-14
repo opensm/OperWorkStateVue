@@ -214,7 +214,6 @@
     },
     created() {
       this.getTotalState()
-      console.log(this.projectList)
     },
     methods: {
       getTotalState() {
@@ -225,13 +224,14 @@
           data.map(item => {
             this.projectList.push(item.Project)
           })
-          this.groupList = [...new Set(JSON.parse(JSON.stringify(data)))]
-          this.projectList = JSON.parse(JSON.stringify(this.projectList))
-          console.log(this.groupList)
           setTimeout(() => {
             this.listLoading = false
           }, 1.5 * 1000)
         })
+        this.groupList = [...new Set(JSON.parse(JSON.stringify(data)))]
+        this.projectList = JSON.parse(JSON.stringify(this.projectList))
+        console.log(this.projectList)
+        console.log(this.groupList)
       },
     }
   }
