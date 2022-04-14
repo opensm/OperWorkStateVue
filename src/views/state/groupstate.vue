@@ -1,37 +1,37 @@
 <template>
   <div class="app-container">
     <el-table
-      :data="tableData"
+      :data="this.groupList"
       style="width: 100%">
       <el-table-column
-        prop="date"
+        prop="#"
         label="序号"
         width="150">
       </el-table-column>
       <el-table-column label="运维部门信息">
         <el-table-column
-          prop="name"
+          prop="GroupName"
           label="所属部门"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="CommandUser"
           label="花名"
           width="120">
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="GroupName"
           label="岗位"
           width="120">
         </el-table-column>
         <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
           <el-table-column
-            prop="province"
+            prop="CountTimes"
             label="任务"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="city"
+            prop="SumSecond"
             label="用时/h"
             width="120">
           </el-table-column>
@@ -129,18 +129,19 @@ export default {
       getGroupStates().then(response => {
         const { data } = response
         data.map(item => {
-          let index = this.projectList.indexOf(item.Project)
-          console.log(1111111111111111111)
-          console.log(index)
-          console.log(2222222222222222222)
-          if (index === -1){
+          const project_index = this.projectList.indexOf(item.Project)
+          if (project_index === -1){
             this.projectList.push(item.Project)
+          }
+          const group_index = this.groupList.indexOf(item)
+          if (group_index === -1){
+            this.groupList.push(item)
           }
         })
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
-        this.groupList = [...new Set(JSON.parse(JSON.stringify(data)))]
+        // this.groupList = [...new Set(JSON.parseInt(JSON.stringify(data)))]
         console.log(this.projectList)
         console.log(this.groupList)
       })
