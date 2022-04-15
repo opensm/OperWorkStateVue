@@ -27,17 +27,20 @@
         <template slot-scope="scope">
           <div>{scope.index}</div>
         </template>
-        <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
+        <el-table-column  v-for="(pro,index )in projectList" :key="index">
+          <template slot-scope="scope">
           <el-table-column
             prop="item.CountTimes"
             label="任务个数"
             width="120">
+            {{ scope.row.Data }}
           </el-table-column>
           <el-table-column
             prop="Data.SumSecond"
             label="用时/h"
             width="120">
           </el-table-column>
+          </template>
         </el-table-column>
       </el-table-column>
     </el-table>
