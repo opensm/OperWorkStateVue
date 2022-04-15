@@ -24,9 +24,6 @@
           label="岗位"
           width="120">
         </el-table-column>
-        <template slot-scope="scope">
-          <div>{{ scope.index }}</div>
-        </template>
         <el-table-column  v-for="(pro,index )in projectList" :key="index">
           <template slot-scope="scope">
           <el-table-column
