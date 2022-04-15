@@ -26,12 +26,12 @@
         </el-table-column>
         <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
           <el-table-column
-            prop="CountTimes"
+            prop="Data.CountTimes"
             label="任务"
             width="120">
           </el-table-column>
           <el-table-column
-            prop="SumSecond"
+            prop="Data.SumSecond"
             label="用时/h"
             width="120">
           </el-table-column>
