@@ -457,7 +457,7 @@ export default {
     handleCreate() {
       this.resetTemp()
       this.getProject()
-      this.getUser()
+      // this.getUser()
       this.getStatus()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
@@ -488,7 +488,7 @@ export default {
     },
     handleUpdate(row) {
       this.getProject()
-      this.getUser()
+      // this.getUser()
       this.getStatus()
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'
