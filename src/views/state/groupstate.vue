@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-table
-      :data="tableData"
+      :data="this.groupList"
       style="width: 100%">
       <el-table-column
         prop="#"
@@ -32,13 +32,11 @@
             prop="item.CountTimes"
             label="任务个数"
             width="120">
-            11111111
           </el-table-column>
           <el-table-column
             prop="Data.SumSecond"
             label="用时/h"
             width="120">
-            2222222
           </el-table-column>
         </el-table-column>
       </el-table-column>
