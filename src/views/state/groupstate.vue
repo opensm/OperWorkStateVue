@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-table
-      :data="this.groupList"
+      :data="tableData"
       style="width: 100%">
       <el-table-column
         prop="#"
@@ -28,16 +28,17 @@
           <div>{scope.index}</div>
         </template>
         <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
-          <el-table-column v-for="item,index in Data" :key="index"
+          <el-table-column
             prop="item.CountTimes"
             label="任务个数"
             width="120">
-            {{ item }}
+            11111111
           </el-table-column>
           <el-table-column
             prop="Data.SumSecond"
             label="用时/h"
             width="120">
+            2222222
           </el-table-column>
         </el-table-column>
       </el-table-column>
