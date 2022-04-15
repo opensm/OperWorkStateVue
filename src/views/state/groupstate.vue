@@ -24,10 +24,13 @@
           label="岗位"
           width="120">
         </el-table-column>
+        <template slot-scope="scope">
+          <div>{scope.index}</div>
+        </template>
         <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
           <el-table-column v-for="item,index in Data" :key="index"
             prop="item.CountTimes"
-            label="任务"
+            label="任务个数"
             width="120">
             {{ item }}
           </el-table-column>
