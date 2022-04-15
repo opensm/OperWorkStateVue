@@ -25,10 +25,11 @@
           width="120">
         </el-table-column>
         <el-table-column  v-for="pro in projectList" :key="pro" :label="pro">
-          <el-table-column
-            prop="Data.CountTimes"
+          <el-table-column v-for="item,index in Data" :key="index"
+            prop="item.CountTimes"
             label="任务"
             width="120">
+            {{ item }}
           </el-table-column>
           <el-table-column
             prop="Data.SumSecond"
